@@ -1,10 +1,14 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+import domain.*;
 
  public class Main {
 
     public static void main(String[] args) throws IOException {
         Manager manager =new Manager();
+        //ArrayList list;
 
         Menu menu = new Menu();
         menu.printMenu1();
@@ -21,14 +25,40 @@ import java.util.Scanner;
                     switch (command){
                         case 1:{
                             manager.getAllTask();
+                            HashMap<Integer, Task> taskHashMap = new HashMap<>(manager.getAllTask());
+                            if (!manager.getAllTask().isEmpty()) {
+                                for (Integer id : taskHashMap.keySet()) {
+                                    System.out.println("ID: " + id + " - " + taskHashMap.get(id).getTaskName()
+                                            + " статус: " + taskHashMap.get(id).getStatus());
+                                    }
+                                }
+                            else {
+                                System.out.println("Список задач данного типа пуст");
+                                }
                             break;
                         }
                         case 2: {
                             manager.getAllEpic();
+                            HashMap<Integer, Epic> epicHashMap = new HashMap<>(manager.getAllEpic());
+                            if (!manager.getAllEpic().isEmpty()) {
+                                for (Integer id : epicHashMap.keySet()) {
+                                    System.out.println("ID: " + id + " - " + epicHashMap.get(id).getTaskName()
+                                            + " статус: " + epicHashMap.get(id).getStatus());
+                                }
+                            }
+                            else System.out.println("Список задач данного типа пуст");
                             break;
                         }
                         case 3: {
                             manager.getAllSubtask();
+                            HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>(manager.getAllSubtask());
+                            if (!manager.getAllEpic().isEmpty()) {
+                                for (Integer id : subtaskHashMap.keySet()) {
+                                    System.out.println("ID: " + id + " - " + subtaskHashMap.get(id).getTaskName()
+                                            + " статус: " + subtaskHashMap.get(id).getStatus());
+                                }
+                            }
+                            else System.out.println("Список задач данного типа пуст");
                         }
                         case 0:
                             break;
@@ -38,7 +68,7 @@ import java.util.Scanner;
                     break;
                 }
                 case 2: {
-                    manager.dellAllTask();
+                    manager.deleteAllTasks();
                     manager.dellAllSubtask();   //Удаление всех SubTask
                     manager.dellAllEpic();     //удаление всех Epic
                     System.out.println("Все задачи удалены");
@@ -53,18 +83,50 @@ import java.util.Scanner;
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             manager.getTask(id);
+
+                            if(manager.getTask(id) != null) {
+                                System.out.println(" ID: " + manager.getTask(id).getIdTask()
+                                        + "\n Название: " + manager.getTask(id).getTaskName()
+                                        + "\n Описание: " + manager.getTask(id).getTaskDescription()
+                                        + "\n Статус: " + manager.getTask(id).getStatus());
+                            }
+                            else System.out.println("Задачи с таким ID нет");
                             break;
                         }
                         case 2: {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             manager.getEpic(id);
+
+                            if(manager.getEpic(id) != null) {
+                                System.out.println(" ID: " + manager.getEpic(id).getIdTask()
+                                        + "\n Название: " + manager.getEpic(id).getTaskName()
+                                        + "\n Описание: " + manager.getEpic(id).getTaskDescription()
+                                        + "\n Статус: " + manager.getEpic(id).getStatus()
+                                        + "\n Номера подзадач: ");
+                                for (Integer idSubtask : manager.getEpic(id).getIdSubtask()){
+                                    System.out.print(idSubtask);
+                                }
+                            }
+                            else System.out.println("Задачи с таким ID нет");
+
                             break;
                         }
                         case 3: {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             manager.getSubtask(id);
+
+                            if(manager.getSubtask(id) != null) {
+                                System.out.println(" ID: " + manager.getSubtask(id).getIdTask()
+                                        + "\n Название: " + manager.getSubtask(id).getTaskName()
+                                        + "\n Описание: " + manager.getSubtask(id).getTaskDescription()
+                                        + "\n Статус: " + manager.getSubtask(id).getStatus()
+                                        + "\n Входит в Epic c ID: " + manager.getSubtask(id).getIdEpic());
+                            }
+                            else System.out.println("Задачи с таким ID нет");
+
+
                             break;
                         }
                         case 0: {
@@ -84,34 +146,31 @@ import java.util.Scanner;
                     switch (command) {
                         case 1: {
                             System.out.println("Введите название задачи (Task)");
-                            //String taskName = scanner.nextLine();
                             String taskName = bufferedReader.readLine();
                             System.out.println("Введите описание задачи");
-                            //String taskDescription = scanner.nextLine();
                             String taskDescription = bufferedReader.readLine();
-                            manager.addTask(taskName, taskDescription);
+                            Task task =new Task(taskName, taskDescription);
+                            manager.addTask(task);     //!!!!!!!!!!!!!!
                             break;
                         }
                         case 2: {
                             System.out.println("Введите название задачи (Epic)");
-                            //String taskName = scanner.nextLine();
                             String taskName = bufferedReader.readLine();
                             System.out.println("Введите описание задачи");
-                            //String taskDescription = scanner.nextLine();
                             String taskDescription = bufferedReader.readLine();
-                            manager.addEpic(taskName, taskDescription);
+                            Epic epic = new Epic(taskName, taskDescription);
+                            manager.addEpic(epic);
                             break;
                         }
                         case 3: {
                             System.out.println("К какой Epic будет относиться Subtask");
                             int idEpic = scanner.nextInt();
                             System.out.println("Введите название задачи (Subtask)");
-                            //String taskName = scanner.nextLine();
                             String taskName = bufferedReader.readLine();
                             System.out.println("Введите описание задачи (Subtask)");
-                            //String taskDescription = scanner.nextLine();
                             String taskDescription = bufferedReader.readLine();
-                            manager.addSubtask(taskName, taskDescription, idEpic);
+                            Subtask subtask = new Subtask(taskName, taskDescription, idEpic);
+                            manager.addSubtask(subtask);
                             break;
                         }
                         case 0:
@@ -133,8 +192,16 @@ import java.util.Scanner;
                             int id = scanner.nextInt();
                             System.out.println("Укажите новый статус (NEW, IN_PROGRESS, DONE)");
                             String status = scanner.next();
-                            manager.updateTask(id, status);
+
+                            Task task = manager.getTask(id);
+                            if (task != null){
+                            task.setStatus(status);
+                            manager.updateTask(task);
                             System.out.println("Статус обновлен");
+                            }
+                            else {
+                                System.out.println("Задачи с таким ID нет");
+                            }
                             break;
                         }
                         case 2: {
@@ -149,8 +216,16 @@ import java.util.Scanner;
                             int id = scanner.nextInt();
                             System.out.println("Укажите новый статус (NEW, IN_PROGRESS, DONE)");
                             String status = scanner.next();
-                            manager.updateSubtask(id, status);
-                            System.out.println("Статус обновлен");
+
+                            Subtask subtask = manager.getSubtask(id);
+                            if (subtask != null) {
+                                subtask.setStatus(status);
+                                manager.updateSubtask(subtask);
+                                System.out.println("Статус обновлен");
+                            }
+                            else {
+                                System.out.println("Задачи с таким ID нет");
+                            }
                             break;
                         }
                         case 0: {
@@ -169,7 +244,7 @@ import java.util.Scanner;
                         case 1: {
                             System.out.println("Укажите ID Task");
                             int id = scanner.nextInt();
-                            manager.dellTask(id);
+                            manager.deleteTask(id);
                             break;
                         }
                         case 2: {

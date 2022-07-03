@@ -1,7 +1,6 @@
 public class Menu {
 
     void printMenu1 () {
-        System.out.println();
         System.out.println("Что вы хотите сделать?");
         System.out.println("1 - Получить список всех задач");
         System.out.println("2 - Удалить все задачи");
@@ -17,7 +16,6 @@ public class Menu {
         System.out.println("2 - Epic");
         System.out.println("3 - Subtask");
         System.out.println("0 - Выйти на уровень выше ");
-        System.out.println();
     }
 
 }

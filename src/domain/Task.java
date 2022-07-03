@@ -1,8 +1,6 @@
 package domain;
 public class Task {
-    //public final byte NEW = 1;
-    //public final byte IN_PROGRESS = 1;
-    //public final byte DONE = 1;
+
     protected String taskName;                //название задачи
     protected String taskDescription;         //Описание задачи
     protected int idTask;                     //номер задачи
@@ -12,6 +10,11 @@ public class Task {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.idTask = idTask;
+    }
+
+    public Task(String taskName, String taskDescription) {
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
     }
 
     public Task() {
@@ -48,4 +51,6 @@ public class Task {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
 }

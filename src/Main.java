@@ -1,15 +1,13 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import domain.*;
+import manager.Manager;
 
- public class Main {
+public class Main {
 
     public static void main(String[] args) throws IOException {
         Manager manager =new Manager();
-        //ArrayList list;
-
         Menu menu = new Menu();
         menu.printMenu1();
         Scanner scanner = new Scanner(System.in);
@@ -25,11 +23,11 @@ import domain.*;
                     switch (command){
                         case 1:{
                             manager.getAllTask();
-                            HashMap<Integer, Task> taskHashMap = new HashMap<>(manager.getAllTask());
+                            ArrayList<Task> listTask = new ArrayList<>(manager.getAllTask());
                             if (!manager.getAllTask().isEmpty()) {
-                                for (Integer id : taskHashMap.keySet()) {
-                                    System.out.println("ID: " + id + " - " + taskHashMap.get(id).getTaskName()
-                                            + " статус: " + taskHashMap.get(id).getStatus());
+                                for (Task task : listTask) {
+                                    System.out.println("ID: " + task.getIdTask() + " - " + task.getTaskName()
+                                            + " статус: " + task.getStatus());
                                     }
                                 }
                             else {
@@ -39,11 +37,11 @@ import domain.*;
                         }
                         case 2: {
                             manager.getAllEpic();
-                            HashMap<Integer, Epic> epicHashMap = new HashMap<>(manager.getAllEpic());
+                            ArrayList<Epic> listEpic = new ArrayList<>(manager.getAllEpic());
                             if (!manager.getAllEpic().isEmpty()) {
-                                for (Integer id : epicHashMap.keySet()) {
-                                    System.out.println("ID: " + id + " - " + epicHashMap.get(id).getTaskName()
-                                            + " статус: " + epicHashMap.get(id).getStatus());
+                                for (Epic epic : listEpic) {
+                                    System.out.println("ID: " + epic.getIdTask() + " - " + epic.getTaskName()
+                                            + " статус: " + epic.getStatus());
                                 }
                             }
                             else System.out.println("Список задач данного типа пуст");
@@ -51,11 +49,11 @@ import domain.*;
                         }
                         case 3: {
                             manager.getAllSubtask();
-                            HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>(manager.getAllSubtask());
+                            ArrayList<Subtask> listSubtask = new ArrayList<>(manager.getAllSubtask());
                             if (!manager.getAllEpic().isEmpty()) {
-                                for (Integer id : subtaskHashMap.keySet()) {
-                                    System.out.println("ID: " + id + " - " + subtaskHashMap.get(id).getTaskName()
-                                            + " статус: " + subtaskHashMap.get(id).getStatus());
+                                for (Subtask subtask : listSubtask) {
+                                    System.out.println("ID: " + subtask.getIdTask() + " - " + subtask.getTaskName()
+                                            + " статус: " + subtask.getStatus());
                                 }
                             }
                             else System.out.println("Список задач данного типа пуст");
@@ -69,8 +67,8 @@ import domain.*;
                 }
                 case 2: {
                     manager.deleteAllTasks();
-                    manager.dellAllSubtask();   //Удаление всех SubTask
-                    manager.dellAllEpic();     //удаление всех Epic
+                    manager.deleteAllSubtask();   //Удаление всех SubTask
+                    manager.deleteAllEpic();     //удаление всех Epic
                     System.out.println("Все задачи удалены");
                     break;
                 }
@@ -105,7 +103,8 @@ import domain.*;
                                         + "\n Статус: " + manager.getEpic(id).getStatus()
                                         + "\n Номера подзадач: ");
                                 for (Integer idSubtask : manager.getEpic(id).getIdSubtask()){
-                                    System.out.print(idSubtask);
+                                    System.out.print(idSubtask + "  ");
+                                    System.out.println("");
                                 }
                             }
                             else System.out.println("Задачи с таким ID нет");
@@ -150,7 +149,7 @@ import domain.*;
                             System.out.println("Введите описание задачи");
                             String taskDescription = bufferedReader.readLine();
                             Task task =new Task(taskName, taskDescription);
-                            manager.addTask(task);     //!!!!!!!!!!!!!!
+                            manager.addTask(task);
                             break;
                         }
                         case 2: {
@@ -207,7 +206,7 @@ import domain.*;
                         case 2: {
                             System.out.println("Укажите ID Epic");
                             int id = scanner.nextInt();
-                            manager.updateEpic(id);
+                            manager.updateEpic(manager.getEpic(id));    // обновляем  Epic с указанным Id
                             System.out.println("Статус обновлен");
                             break;
                         }

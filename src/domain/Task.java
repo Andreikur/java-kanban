@@ -1,10 +1,10 @@
 package domain;
 public class Task {
 
-    protected String taskName;                //название задачи
-    protected String taskDescription;         //Описание задачи
-    protected int idTask;                     //номер задачи
-    protected String status = "NEW";                    // статус задачи
+    private String taskName;                //название задачи
+    private String taskDescription;         //Описание задачи
+    private int idTask;                     //номер задачи
+    private String status = "NEW";                    // статус задачи
 
     public Task(String taskName, String taskDescription, int idTask) {
         this.taskName = taskName;

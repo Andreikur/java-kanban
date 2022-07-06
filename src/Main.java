@@ -124,8 +124,6 @@ public class Main {
                                         + "\n Входит в Epic c ID: " + manager.getSubtask(id).getIdEpic());
                             }
                             else System.out.println("Задачи с таким ID нет");
-
-
                             break;
                         }
                         case 0: {
@@ -134,9 +132,7 @@ public class Main {
                         default:
                             System.out.println("Такого раздела не существует");
                     }
-
                     break;
-
                 }
                 case 4: {
                     System.out.println("Задачу какого типа хотите создать?");
@@ -178,7 +174,6 @@ public class Main {
                             System.out.println("Такого раздела не существует");
                         }
                     }
-
                     break;
                 }
                 case 5: {

@@ -23,7 +23,7 @@ public class Manager {
 
     //получить список всех задач Task
     public ArrayList<Task> getAllTask(){
-        ArrayList listTask = new ArrayList();
+        ArrayList<Task> listTask = new ArrayList();
         for (Integer key: allTasks.keySet()){
             listTask.add(allTasks.get(key));
         }
@@ -82,9 +82,12 @@ public class Manager {
     }
 
     //получит лист Subtask входящих в эпик
-    public  ArrayList <Integer> getListIdSubtask(Integer idEpic){
-        ArrayList <Integer> listIdSubtask = allEpic.get(idEpic).getIdSubtask();
-        return listIdSubtask;
+    public  ArrayList <Subtask> getListSubtaskInEpic(Integer idEpic){
+        ArrayList <Subtask> listSubtaskInEpic = new ArrayList<>();
+        for (Integer idSubtask : allEpic.get(idEpic).getIdSubtask()){
+            listSubtaskInEpic.add(allSubtask.get(idSubtask));
+        }
+        return listSubtaskInEpic;
     }
 
     //Удаление всех Epic
@@ -173,12 +176,15 @@ public class Manager {
     public void dellSubtask(Integer id){
         if (allSubtask.containsKey(id)){
             Integer idEpic = getSubtask(id).getIdEpic();  //  получаем ключ эпика к которому привязан субтаск
-            allSubtask.remove(id);
-            Epic epic = allEpic.get(idEpic);
-            ArrayList<Integer> listIdSubtask = getListIdSubtask(idEpic);  //получаем лист с субтасками входящими в эпик
-            listIdSubtask.remove(id);                            // удаляем из списка объект со значением id субтаска
-            epic.setIdSubtask(listIdSubtask);                    // обновляем в эпике лист id субтасков
-            updateEpic(epic);                       // обновление статуса Epic, для данной Subtask
+            allSubtask.remove(id);                        // удаляем субтаск
+            Epic epic = allEpic.get(idEpic);                // получаем эпик
+            ArrayList<Subtask> listSubtaskInEpic = getListSubtaskInEpic(idEpic);  //получаем лист с субтасками входящими в эпик
+
+            listSubtaskInEpic.remove(id);                            // удаляем из списка объект со значением id субтаска
+            ArrayList<Integer> listIdSubtask = epic.getIdSubtask();  //получаем лист с ID субтасков  эпика
+            listIdSubtask.remove(id);                                //удаляем из листа ID субтасков эпика, ID удаляемого субтаска
+            epic.setIdSubtask(listIdSubtask);                       //обновляем лист ID субтасков эпика
+            updateEpic(epic);                       // обновление статуса и листа входящих в Epic субтасков, для данной Subtask
         }
         else {
             System.out.println("Subtask с таким ID не существует");

@@ -23,7 +23,7 @@ public class Manager {
 
     //получить список всех задач Task
     public ArrayList<Task> getAllTask(){
-        ArrayList<Task> listTask = new ArrayList();
+        ArrayList<Task> listTask = new ArrayList<>();
         for (Integer key: allTasks.keySet()){
             listTask.add(allTasks.get(key));
         }

@@ -7,14 +7,22 @@ import domain.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Manager {
+public class InMemoryTaskManager implements TaskManager {
     private int id;
     private HashMap<Integer, Task> allTasks = new HashMap<>();
     private HashMap<Integer, Epic> allEpic = new HashMap<>();
     private HashMap<Integer, Subtask> allSubtask = new HashMap<>();
 
+    private InMemoryHistoryManager inMemoryHistoryManager =  new InMemoryHistoryManager();
+
+    private ArrayList<Task> history = new ArrayList<>();
+
+
+
     //Создать Task
+    @Override
     public void addTask(Task task){
         id++;
         task.setIdTask(id);
@@ -22,6 +30,7 @@ public class Manager {
     }
 
     //получить список всех задач Task
+    @Override
     public ArrayList<Task> getAllTask(){
         ArrayList<Task> listTask = new ArrayList<>();
         for (Integer key: allTasks.keySet()){
@@ -31,16 +40,20 @@ public class Manager {
     }
 
     //получить Task по идентификатору
-    public Task getTask (Integer id) {
+    @Override
+    public Task getTask(Integer id) {
+        addHistory(allTasks.get(id));       //добавляем таск в историю
         return allTasks.get(id);
     }
 
     //Удаление всех Task
+    @Override
     public void deleteAllTasks() {
         allTasks.clear();
     }
 
     //удалить Task по модификатору
+    @Override
     public void deleteTask(Integer id){
         if (allTasks.containsKey(id)){
             allTasks.remove(id);
@@ -51,11 +64,13 @@ public class Manager {
     }
 
     //Обновить статус Task
-    public void updateTask (Task task) {
+    @Override
+    public void updateTask(Task task) {
             allTasks.put(task.getIdTask(), task);
     }
 
     //Создать Epic
+    @Override
     public void addEpic(Epic epic){
         id++;
         epic.setIdTask(id);
@@ -63,6 +78,7 @@ public class Manager {
     }
 
     //получить список всех задач Epic
+    @Override
     public ArrayList<Epic> getAllEpic(){
         ArrayList<Epic> listEpic = new ArrayList<>();
         for (Integer key : allEpic.keySet()){
@@ -72,8 +88,10 @@ public class Manager {
     }
 
     //получить Epic по идентификатору
-    public Epic getEpic (Integer id) {
+    @Override
+    public Epic getEpic(Integer id) {
         if (allEpic.containsKey(id)){
+            addHistory(allEpic.get(id));       //добавляем эпик в историю
             return allEpic.get(id);
         }
         else {
@@ -82,6 +100,7 @@ public class Manager {
     }
 
     //получит лист Subtask входящих в эпик
+    @Override
     public  ArrayList <Subtask> getListSubtaskInEpic(Integer idEpic){
         ArrayList <Subtask> listSubtaskInEpic = new ArrayList<>();
         for (Integer idSubtask : allEpic.get(idEpic).getIdSubtask()){
@@ -91,12 +110,14 @@ public class Manager {
     }
 
     //Удаление всех Epic
+    @Override
     public void deleteAllEpic() {
         allSubtask.clear();
         allEpic.clear();
     }
 
     //удалить Epic по модификатору
+    @Override
     public void dellEpic(Integer id){
         if (allEpic.containsKey(id)){
             Epic thisEpic;
@@ -115,28 +136,30 @@ public class Manager {
     }
 
     //Обновить статус Epic
-    public void updateEpic (Epic epic) {
+    @Override
+    public void updateEpic(Epic epic) {
             boolean isNEW;
             boolean isDONE;
             ArrayList<Integer> idSubtask = epic.getIdSubtask();
             CheckingLogic checkingLogic = new CheckingLogic();
 
-            isNEW = checkingLogic.checking(allSubtask, idSubtask, "NEW");
-            isDONE = checkingLogic.checking(allSubtask, idSubtask, "DONE");
+            isNEW = checkingLogic.checking(allSubtask, idSubtask, Status.NEW);
+            isDONE = checkingLogic.checking(allSubtask, idSubtask, Status.DONE);
             if (epic.getIdSubtask().isEmpty() || isNEW) {
-                epic.setStatus("NEW");                  //если нет субтасков  или все субтаск NEW , статус NEW
+                epic.setStatus(Status.NEW);                  //если нет субтасков  или все субтаск NEW , статус NEW
             }
             else if(isDONE){
-                epic.setStatus("DONE");
+                epic.setStatus(Status.DONE);
             }
             else {
-                epic.setStatus("IN_PROGRESS");
+                epic.setStatus(Status.IN_PROGRESS);
         }
             allEpic.put(epic.getIdTask(), epic);         //записываем эпик с измененным статусом в хешмап
     }
 
 
     //Создать Subtask
+    @Override
     public void addSubtask(Subtask subtask){
         if (allEpic.containsKey(subtask.getIdEpic())) {
             id++;
@@ -154,6 +177,7 @@ public class Manager {
     }
 
     //получить список всех задач Subtask
+    @Override
     public ArrayList<Subtask> getAllSubtask(){
         ArrayList<Subtask> listSubtask = new ArrayList<>();
         for (Integer key :allSubtask.keySet()){
@@ -163,16 +187,20 @@ public class Manager {
     }
 
     //получить Subtask по идентификатору
+    @Override
     public Subtask getSubtask(Integer id) {
+        addHistory(allSubtask.get(id));       //добавляем субтаск в историю
         return allSubtask.get(id);
     }
 
     //Удаление всех Subtask
+    @Override
     public void deleteAllSubtask() {
         allSubtask.clear();
     }
 
     //удалить Subtask по модификатору
+    @Override
     public void dellSubtask(Integer id){
         if (allSubtask.containsKey(id)){
             Integer idEpic = getSubtask(id).getIdEpic();  //  получаем ключ эпика к которому привязан субтаск
@@ -192,11 +220,27 @@ public class Manager {
     }
 
     //Обновить статус Subtask
-    public void updateSubtask (Subtask subtask) {
+    @Override
+    public void updateSubtask(Subtask subtask) {
             allSubtask.put(subtask.getIdTask(), subtask);
             Epic epic = this.getEpic(subtask.getIdEpic());
             updateEpic(epic);                                    // обновление статуса Epic, для данной Subtask
+    }
 
+    //история просмотров
+    @Override
+    public List<Task> getHistory(){
+        return history;
+    }
 
+    @Override
+    public void addHistory(Task task){
+        if (history.size() < 10) {
+            history.add(task);
+        }
+        else {
+            history.remove(0);
+            history.add(task);
+        }
     }
 }

@@ -1,10 +1,13 @@
 package domain;
+
+import manager.Status;
+
 public class Task {
 
     private String taskName;                //название задачи
     private String taskDescription;         //Описание задачи
     private int idTask;                     //номер задачи
-    private String status = "NEW";                    // статус задачи
+    private Status status = Status.NEW;                    // статус задачи
 
     public Task(String taskName, String taskDescription, int idTask) {
         this.taskName = taskName;
@@ -32,7 +35,7 @@ public class Task {
         return idTask;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -48,7 +51,7 @@ public class Task {
         this.idTask = idTask;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import domain.*;
+import manager.HistoryManager;
 import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Status;
@@ -10,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         InMemoryTaskManager taskManager =new InMemoryTaskManager();
-        //InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
         Menu menu = new Menu();
         menu.printMenu1();
         Scanner scanner = new Scanner(System.in);
@@ -84,8 +85,9 @@ public class Main {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             taskManager.getTask(id);
-                            taskManager.getHistory();
-                            System.out.println(taskManager.getHistory());
+                            historyManager.add(taskManager.getTask(id));
+                            historyManager.getHistory();
+                            System.out.println(historyManager.getHistory());
 
                             /*if(taskManager.getTask(id) != null) {
                                 System.out.println(" ID: " + taskManager.getTask(id).getIdTask()
@@ -100,8 +102,9 @@ public class Main {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             taskManager.getEpic(id);
-                            taskManager.getHistory();
-                            System.out.println(taskManager.getHistory());
+                            historyManager.add(taskManager.getEpic(id));
+                            historyManager.getHistory();
+                            System.out.println(historyManager.getHistory());
 
                             /*if(taskManager.getEpic(id) != null) {
                                 System.out.println(" ID: " + taskManager.getEpic(id).getIdTask()
@@ -122,8 +125,9 @@ public class Main {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             taskManager.getSubtask(id);
-                            taskManager.getHistory();
-                            System.out.println(taskManager.getHistory());
+                            historyManager.add(taskManager.getSubtask(id));
+                            historyManager.getHistory();
+                            System.out.println(historyManager.getHistory());
 
                             /*if(taskManager.getSubtask(id) != null) {
                                 System.out.println(" ID: " + taskManager.getSubtask(id).getIdTask()

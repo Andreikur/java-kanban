@@ -105,20 +105,10 @@ public class Managers {
             public void updateSubtask(Subtask subtask) {
 
             }
-
-            @Override
-            public List<Task> getHistory(){
-
-                return null;
-            }
-
-            @Override
-            public void addHistory(Task task){}
-
         };
     }
 
-    /*public static HistoryManager getDefaultHistory() {
+    public static HistoryManager getDefaultHistory() {
         return new HistoryManager() {
             @Override
             public void add(Task task) {
@@ -130,5 +120,5 @@ public class Managers {
                 return null;
             }
         };
-    }*/
+    }
 }

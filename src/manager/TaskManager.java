@@ -67,11 +67,4 @@ public interface TaskManager {
     //Обновить статус Subtask
     void updateSubtask(Subtask subtask);
 
-    //вызвать историю просмотров
-    List<Task> getHistory();
-
-    //добавить элемент в историю просмотров
-    void addHistory(Task task);
-
-
 }

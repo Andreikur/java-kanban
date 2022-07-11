@@ -1,7 +1,6 @@
 package manager;
 
 import domain.Task;
-
 import java.util.List;
 
 public interface HistoryManager {

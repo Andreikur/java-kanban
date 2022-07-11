@@ -2,16 +2,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import domain.*;
-import manager.HistoryManager;
-import manager.InMemoryHistoryManager;
-import manager.InMemoryTaskManager;
-import manager.Status;
+import manager.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        InMemoryTaskManager taskManager =new InMemoryTaskManager();
-        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
         Menu menu = new Menu();
         menu.printMenu1();
         Scanner scanner = new Scanner(System.in);
@@ -204,7 +202,7 @@ public class Main {
                             Task task = taskManager.getTask(id);
                             if (task != null){
                             task.setStatus(status1);
-                            taskManager.updateTask(task);
+                                taskManager.updateTask(task);
                             System.out.println("Статус обновлен");
                             }
                             else {

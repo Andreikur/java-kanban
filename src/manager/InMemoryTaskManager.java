@@ -7,19 +7,12 @@ import domain.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id;
     private HashMap<Integer, Task> allTasks = new HashMap<>();
     private HashMap<Integer, Epic> allEpic = new HashMap<>();
     private HashMap<Integer, Subtask> allSubtask = new HashMap<>();
-
-    //private InMemoryHistoryManager inMemoryHistoryManager;
-
-    //private ArrayList<Task> history = new ArrayList<>();
-
-
 
     //Создать Task
     @Override

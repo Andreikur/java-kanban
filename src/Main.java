@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();
         Menu menu = new Menu();
         menu.printMenu1();
         Scanner scanner = new Scanner(System.in);
@@ -83,9 +82,9 @@ public class Main {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             taskManager.getTask(id);
-                            historyManager.add(taskManager.getTask(id));
-                            historyManager.getHistory();
-                            System.out.println(historyManager.getHistory());
+                            //historyManager.add(taskManager.getTask(id));
+                            taskManager.getHistory();
+                            System.out.println(taskManager.getHistory());
 
                             /*if(taskManager.getTask(id) != null) {
                                 System.out.println(" ID: " + taskManager.getTask(id).getIdTask()
@@ -100,9 +99,9 @@ public class Main {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             taskManager.getEpic(id);
-                            historyManager.add(taskManager.getEpic(id));
-                            historyManager.getHistory();
-                            System.out.println(historyManager.getHistory());
+                            //historyManager.add(taskManager.getEpic(id));
+                            taskManager.getHistory();
+                            System.out.println(taskManager.getHistory());
 
                             /*if(taskManager.getEpic(id) != null) {
                                 System.out.println(" ID: " + taskManager.getEpic(id).getIdTask()
@@ -123,9 +122,9 @@ public class Main {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
                             taskManager.getSubtask(id);
-                            historyManager.add(taskManager.getSubtask(id));
-                            historyManager.getHistory();
-                            System.out.println(historyManager.getHistory());
+                            //historyManager.add(taskManager.getSubtask(id));
+                            taskManager.getHistory();
+                            System.out.println(taskManager.getHistory());
 
                             /*if(taskManager.getSubtask(id) != null) {
                                 System.out.println(" ID: " + taskManager.getSubtask(id).getIdTask()

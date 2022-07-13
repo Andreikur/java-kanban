@@ -7,12 +7,17 @@ import domain.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private int id;
     private HashMap<Integer, Task> allTasks = new HashMap<>();
     private HashMap<Integer, Epic> allEpic = new HashMap<>();
     private HashMap<Integer, Subtask> allSubtask = new HashMap<>();
+
+    private HistoryManager historyManager = new InMemoryHistoryManager();
+
+
 
     //Создать Task
     @Override
@@ -35,6 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
     //получить Task по идентификатору
     @Override
     public Task getTask(Integer id) {
+        historyManager.add(allTasks.get(id));
         return allTasks.get(id);
     }
 
@@ -83,6 +89,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpic(Integer id) {
         if (allEpic.containsKey(id)){
+            historyManager.add(allEpic.get(id));
             return allEpic.get(id);
         }
         else {
@@ -180,6 +187,7 @@ public class InMemoryTaskManager implements TaskManager {
     //получить Subtask по идентификатору
     @Override
     public Subtask getSubtask(Integer id) {
+        historyManager.add(allSubtask.get(id));
         return allSubtask.get(id);
     }
 
@@ -196,9 +204,7 @@ public class InMemoryTaskManager implements TaskManager {
             Integer idEpic = getSubtask(id).getIdEpic();  //  получаем ключ эпика к которому привязан субтаск
             allSubtask.remove(id);                        // удаляем субтаск
             Epic epic = allEpic.get(idEpic);                // получаем эпик
-            ArrayList<Subtask> listSubtaskInEpic = getListSubtaskInEpic(idEpic);  //получаем лист с субтасками входящими в эпик
 
-            listSubtaskInEpic.remove(id);                            // удаляем из списка объект со значением id субтаска
             ArrayList<Integer> listIdSubtask = epic.getIdSubtask();  //получаем лист с ID субтасков  эпика
             listIdSubtask.remove(id);                                //удаляем из листа ID субтасков эпика, ID удаляемого субтаска
             epic.setIdSubtask(listIdSubtask);                       //обновляем лист ID субтасков эпика
@@ -215,5 +221,10 @@ public class InMemoryTaskManager implements TaskManager {
             allSubtask.put(subtask.getIdTask(), subtask);
             Epic epic = this.getEpic(subtask.getIdEpic());
             updateEpic(epic);                                    // обновление статуса Epic, для данной Subtask
+    }
+
+    @Override
+    public List<Task> getHistory(){
+        return historyManager.getHistory();
     }
 }

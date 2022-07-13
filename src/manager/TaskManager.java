@@ -4,6 +4,7 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -64,5 +65,7 @@ public interface TaskManager {
 
     //Обновить статус Subtask
     void updateSubtask(Subtask subtask);
+
+    List<Task> getHistory();
 
 }

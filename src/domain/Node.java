@@ -1,27 +1,37 @@
 package domain;
 
-public class Node<T> {
-    private T value;
-    private Node next;
+public class Node<Task> {
+    private Task value;
+    private Node<Task> next;
+    private Node<Task> prev;
 
-    public Node(T value) {
+
+    public Node(Task value) {
         this.value = value;
     }
 
-    public T getValue() {
+    public Task getValue() {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(Task value) {
         this.value = value;
     }
 
-    public Node getNext() {
+    public Node<Task> getNext() {
         return next;
     }
 
-    public void setNext(Node next) {
+    public void setNext(Node<Task> next) {
         this.next = next;
+    }
+
+    public Node<Task> getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Node<Task> prev) {
+        this.prev = prev;
     }
 }
 

@@ -8,10 +8,11 @@ import java.util.*;
 public class  InMemoryHistoryManager implements HistoryManager {
 
     private Node<Task> head;
+    private Node<Task> tail;
     private int size;
 
     private  LinkedList<Task> history = new LinkedList<>();
-    private HashMap<Integer, Node> historyHashMap = new HashMap<>();
+    private HashMap<Integer, Node<Task>> nodes = new HashMap<>();
 
 
 
@@ -22,16 +23,16 @@ public class  InMemoryHistoryManager implements HistoryManager {
 
 
     public void add(Task task){
-        if (historyHashMap.containsKey(task.getIdTask())){
+        if (nodes.containsKey(task.getIdTask())){
             this.removeNode(getIndexNode(task.getIdTask()));           //удаление повторяющейся задачи из истории
         }
 
-        historyHashMap.put(task.getIdTask(), this.linkLast(task));
+        nodes.put(task.getIdTask(), this.linkLast(task));
     }
 
     @Override
     public void remove(int id) {
-        if (historyHashMap.containsKey(id)) {
+        if (nodes.containsKey(id)) {
             removeNode(getIndexNode(id));           //удаление задачи из истории при удалении из списка
         }
     }

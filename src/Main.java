@@ -73,7 +73,6 @@ public class Main {
                 }
                 case 2: {
                     taskManager.deleteAllTasks();
-                    taskManager.deleteAllSubtask();   //Удаление всех SubTask
                     taskManager.deleteAllEpic();     //удаление всех Epic
                     System.out.println("Все задачи удалены");
                     break;

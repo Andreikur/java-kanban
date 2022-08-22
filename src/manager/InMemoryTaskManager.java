@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Epic> allEpics = new HashMap<>();
     private final Map<Integer, Subtask> allSubtasks = new HashMap<>();
 
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    private final   HistoryManager historyManager = Managers.getDefaultHistory();
 
 
 
@@ -37,13 +37,11 @@ public class InMemoryTaskManager implements TaskManager {
     //получить Task по идентификатору
     @Override
     public Task getTask(Integer id) {
-        if(allTasks.containsKey(id)) {
-            historyManager.add(allTasks.get(id));
-            return allTasks.get(id);
+        Task task = allTasks.get(id);
+        if(task != null) {
+            historyManager.add(task);
         }
-        else {
-            return null;
-        }
+        return task;
     }
 
     //Удаление всех Task
@@ -91,13 +89,11 @@ public class InMemoryTaskManager implements TaskManager {
     //получить Epic по идентификатору
     @Override
     public Epic getEpic(Integer id) {
-        if (allEpics.containsKey(id)){
-            historyManager.add(allEpics.get(id));
-            return allEpics.get(id);
+        Epic epic = allEpics.get(id);
+        if(epic != null) {
+            historyManager.add(epic);
         }
-        else {
-            return null;
-        }
+        return epic;
     }
 
     //получит лист Subtask входящих в эпик
@@ -117,8 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Integer id : allEpics.keySet()){
             historyManager.remove(id);                  //удаление epic из истории
         }
-
-        allSubtasks.clear();
+        deleteAllSubtask();
         allEpics.clear();
     }
 
@@ -155,11 +150,9 @@ public class InMemoryTaskManager implements TaskManager {
             isDONE = checkingLogic.checking(allSubtasks, idSubtask, Status.DONE);
             if (epic.getIdSubtask().isEmpty() || isNEW) {
                 epic.setStatus(Status.NEW);                  //если нет субтасков  или все субтаск NEW , статус NEW
-            }
-            else if(isDONE){
+            } else if(isDONE){
                 epic.setStatus(Status.DONE);
-            }
-            else {
+            } else {
                 epic.setStatus(Status.IN_PROGRESS);
         }
     }
@@ -197,18 +190,14 @@ public class InMemoryTaskManager implements TaskManager {
     //получить Subtask по идентификатору
     @Override
     public Subtask getSubtask(Integer id) {
-        if(allSubtasks.containsKey(id)) {
-            historyManager.add(allSubtasks.get(id));
-            return allSubtasks.get(id);
+        Subtask subtask = allSubtasks.get(id);
+        if(subtask != null) {
+            historyManager.add(subtask);
         }
-        else{
-            return null;
-        }
+        return subtask;
     }
 
     //Удаление всех Subtask
-    //Условие задачи, на сколько я понял, подразумевало удаление всех задач. Зачем менять поля Epics,
-    // если следующим шагом в Main они будут удалены?
     @Override
     public void deleteAllSubtask() {
         for (Integer id : allSubtasks.keySet()){

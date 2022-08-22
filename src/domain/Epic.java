@@ -1,12 +1,14 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class Epic extends Task {
 
-     private ArrayList<Integer> idSubtask = new ArrayList<>();
+     private List<Integer> idSubtask = new ArrayList<>();
 
-    public Epic(String taskName, String taskDescription, int idTask, ArrayList<Integer> idSubtask) {
+    public Epic(String taskName, String taskDescription, int idTask, List<Integer> idSubtask) {
         super(taskName, taskDescription, idTask);
         this.idSubtask = idSubtask;
     }
@@ -22,11 +24,11 @@ public class Epic extends Task {
     public Epic () {
     }
 
-    public ArrayList<Integer> getIdSubtask() {
+    public List<Integer> getIdSubtask() {
         return idSubtask;
     }
 
-    public void setIdSubtask(ArrayList<Integer> idSubtask) {
+    public void setIdSubtask(List<Integer> idSubtask) {
         this.idSubtask = idSubtask;
     }
 

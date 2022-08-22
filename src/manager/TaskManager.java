@@ -3,7 +3,7 @@ package manager;
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public interface TaskManager {
@@ -13,7 +13,7 @@ public interface TaskManager {
     void addTask(Task task);
 
     //получить список всех задач Task
-    ArrayList<Task> getAllTask();
+    List<Task> getAllTask();
 
     //получить Task по идентификатору
     Task getTask(Integer id);
@@ -31,13 +31,13 @@ public interface TaskManager {
     void addEpic(Epic epic);
 
     //получить список всех задач Epic
-    ArrayList<Epic> getAllEpic();
+    List<Epic> getAllEpics();
 
     //получить Epic по идентификатору
     Epic getEpic(Integer id);
 
     //получит лист Subtask входящих в эпик
-    ArrayList <Subtask> getListSubtaskInEpic(Integer idEpic);
+    List <Subtask> getListSubtaskInEpic(Integer idEpic);
 
     //Удаление всех Epic
     void deleteAllEpic();
@@ -45,14 +45,14 @@ public interface TaskManager {
     //удалить Epic по модификатору
     void dellEpic(Integer id);
 
-    //Обновить статус Epic
-    void updateEpic(Epic epic);
+    //Обновить epic
+    void  updateEpic(Epic epic);
 
     //Создать Subtask
     void addSubtask(Subtask subtask);
 
     //получить список всех задач Subtask
-    ArrayList<Subtask> getAllSubtask();
+    List<Subtask> getAllSubtasks();
 
     //получить Subtask по идентификатору
     Subtask getSubtask(Integer id);

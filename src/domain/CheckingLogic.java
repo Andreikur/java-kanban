@@ -2,15 +2,16 @@ package domain;
 
 import manager.Status;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CheckingLogic {
     String status;
     HashMap<Integer, Subtask> allSubtask;
-    ArrayList<Integer> idSubtask;
+    List<Integer> idSubtask;
 
-    public CheckingLogic(HashMap<Integer, Subtask> allSubtask, ArrayList<Integer> idSubtask, String status) {
+    public CheckingLogic(HashMap<Integer, Subtask> allSubtask, List<Integer> idSubtask, String status) {
         this.allSubtask = allSubtask;
         this.idSubtask = idSubtask;
         this.status = status;
@@ -20,7 +21,7 @@ public class CheckingLogic {
 
     }
 
-    public boolean checking (HashMap<Integer, Subtask> allSubtask , ArrayList<Integer> idSubtask, Status status) {
+    public boolean checking (Map<Integer, Subtask> allSubtask , List<Integer> idSubtask, Status status) {
         boolean isStatus = false;
         for (Integer idSub : idSubtask) {
             Subtask thisSubtask = allSubtask.get(idSub);    //получаем субтаски входящие в эпик

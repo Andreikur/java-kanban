@@ -10,6 +10,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         TaskManager taskManager = Managers.getDefault();
+        Task currentTask;
+        Epic currentEpic;
+        Subtask currentSubtask;
         List<Task> taskManager2;
         Menu menu = new Menu();
         menu.printMenu1();
@@ -85,13 +88,13 @@ public class Main {
                         case 1: {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
-                            //taskManager.getTask(id);
+                            currentTask =taskManager.getTask(id);
 
-                            if(taskManager.getTask(id) != null) {
-                                System.out.println(" ID: " + taskManager.getTask(id).getIdTask()
-                                        + "\n Название: " + taskManager.getTask(id).getTaskName()
-                                        + "\n Описание: " + taskManager.getTask(id).getTaskDescription()
-                                        + "\n Статус: " + taskManager.getTask(id).getStatus());
+                            if(currentTask != null) {
+                                System.out.println(" ID: " + currentTask.getIdTask()
+                                        + "\n Название: " +currentTask.getTaskName()
+                                        + "\n Описание: " + currentTask.getTaskDescription()
+                                        + "\n Статус: " + currentTask.getStatus());
 
                                 //historyManager.add(taskManager.getTask(id));
                                 if(taskManager.getHistory() == null) {
@@ -109,23 +112,23 @@ public class Main {
                         case 2: {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
-                            //taskManager.getEpic(id);
-                            if(taskManager.getEpic(id) != null) {
-                                System.out.println(" ID: " + taskManager.getEpic(id).getIdTask()
-                                        + "\n Название: " + taskManager.getEpic(id).getTaskName()
-                                        + "\n Описание: " + taskManager.getEpic(id).getTaskDescription()
-                                        + "\n Статус: " + taskManager.getEpic(id).getStatus()
+                            currentEpic = taskManager.getEpic(id);
+                            if(currentEpic != null) {
+                                System.out.println(" ID: " + currentEpic.getIdTask()
+                                        + "\n Название: " + currentEpic.getTaskName()
+                                        + "\n Описание: " + currentEpic.getTaskDescription()
+                                        + "\n Статус: " + currentEpic.getStatus()
                                         + "\n Номера подзадач: ");
-                                for (Integer idSubtask : taskManager.getEpic(id).getIdSubtask()){
-                                    System.out.print(idSubtask + "  ");
-                                    System.out.println("");
+                                for (Integer idSubtask : currentEpic.getIdSubtask()){
+                                    System.out.print(idSubtask + ", ");
                                 }
+                                System.out.println("");
                                 //historyManager.add(taskManager.getEpic(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
                                 }
                                 else {
-                                    taskManager2 = taskManager.getHistory();      //убрать комментарий если не будет использоваться вывод на печать
+                                    taskManager2 = taskManager.getHistory();
                                     System.out.println(taskManager2);
                                 }
 
@@ -136,13 +139,13 @@ public class Main {
                         case 3: {
                             System.out.println("Введите ID задачи");
                             int id = scanner.nextInt();
-                            //taskManager.getSubtask(id);
-                            if(taskManager.getSubtask(id) != null) {
-                                System.out.println(" ID: " + taskManager.getSubtask(id).getIdTask()
-                                        + "\n Название: " + taskManager.getSubtask(id).getTaskName()
-                                        + "\n Описание: " + taskManager.getSubtask(id).getTaskDescription()
-                                        + "\n Статус: " + taskManager.getSubtask(id).getStatus()
-                                        + "\n Входит в Epic c ID: " + taskManager.getSubtask(id).getIdEpic());
+                            currentSubtask = taskManager.getSubtask(id);
+                            if(currentSubtask != null) {
+                                System.out.println(" ID: " + currentSubtask.getIdTask()
+                                        + "\n Название: " + currentSubtask.getTaskName()
+                                        + "\n Описание: " + currentSubtask.getTaskDescription()
+                                        + "\n Статус: " + currentSubtask.getStatus()
+                                        + "\n Входит в Epic c ID: " + currentSubtask.getIdEpic());
 
                                 //historyManager.add(taskManager.getSubtask(id));
                                 if(taskManager.getHistory() == null) {

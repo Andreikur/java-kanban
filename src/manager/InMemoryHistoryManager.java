@@ -9,88 +9,64 @@ public class  InMemoryHistoryManager implements HistoryManager {
 
     private Node<Task> head;
     private Node<Task> tail;
-    private int size;
 
-    private  LinkedList<Task> history = new LinkedList<>();
-    private HashMap<Integer, Node<Task>> nodes = new HashMap<>();
-
-
+    private final   LinkedList<Task> history = new LinkedList<>();
+    private final HashMap<Integer, Node<Task>> nodes = new HashMap<>();
 
     public  List<Task> getHistory(){
-        getTasks(head);
+        getTasks();
         return  history;
     }
 
 
     public void add(Task task){
+        Node<Task> currentNode = this.linkLast(task);
         if (nodes.containsKey(task.getIdTask())){
-            this.removeNode(getIndexNode(task.getIdTask()));           //удаление повторяющейся задачи из истории
+            removeNode(nodes.get(task.getIdTask()));           //удаление повторяющейся задачи из истории
         }
-
-        nodes.put(task.getIdTask(), this.linkLast(task));
+        nodes.put(task.getIdTask(), currentNode);
     }
 
     @Override
     public void remove(int id) {
         if (nodes.containsKey(id)) {
-            removeNode(getIndexNode(id));           //удаление задачи из истории при удалении из списка
+            removeNode(nodes.get(id));           //удаление задачи из истории при удалении из списка
         }
     }
 
     //добавление задачи в конец списка истории
-    public Node<Task> linkLast (Task  value){
-        Node<Task> node = new Node<>(value);
-        if (head == null) {
+        public Node<Task> linkLast (Task  value){
+        Node<Task> oldTAil = tail;
+        Node<Task> node = new Node<>(oldTAil ,value, null);
+        tail = node;
+        if (oldTAil == null) {                 //Если добавляется первый узел. Начало и конец это один и тот же элемент
             head = node;
         } else {
-            Node<Task> cur = head;
-            while (cur.getNext() != null) {
-                cur = cur.getNext();
-            }
-            cur.setNext(node);
+            oldTAil.setNext(node);
         }
-        size++;
-        return node;
+            return node;
     }
 
-    //сбор всех задач
-    public void getTasks(Node<Task> head){
+    public void getTasks(){
         history.clear();
         Node<Task> cur = head;
-
-        if(cur == null){
-            System.out.println("Список истории пустой");
-        }
-        else {
-            history.add(cur.getValue());
-            while (cur.getNext() != null) {
-                cur = cur.getNext();
+            while (cur != null) {
                 history.add(cur.getValue());
+                cur = cur.getNext();
             }
         }
-    }
 
     //удаление повторяющегося элемента и при удалении элемента из списка
-    public void removeNode(int index){
-        if (index == 0) {
-            head = head.getNext();
-        } else {
-            Node cur = head;
-            for (int i = 0; i < index - 1; i++) {
-                cur = cur.getNext();
-            }
-            cur.setNext(cur.getNext().getNext());
-        }
-        size--;
+    public void removeNode(Node<Task> node){
+        Node<Task> cur = node;
+       if(cur.getPrev() == null){
+           head = head.getNext();
+       }else if(cur.getNext() == null){
+           tail = tail.getPrev();
+       }else {
+           node.setNext(cur.getNext().getNext());
+           node.setPrev(cur.getPrev().getPrev());
+       }
     }
 
-    public int getIndexNode(int idTask){          // получить индекс ноды
-        int index = 0;
-        Node<Task> cur = head;
-        while(cur.getValue().getIdTask() != idTask){
-            cur = cur.getNext();
-            index++;
-        }
-        return index;
-    }
 }

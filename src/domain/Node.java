@@ -10,6 +10,12 @@ public class Node<Task> {
         this.value = value;
     }
 
+    public Node(Node<Task> prev, Task value, Node<Task> next){
+        this.prev = prev;
+        this.value = value;
+        this.next = next;
+    }
+
     public Task getValue() {
         return value;
     }

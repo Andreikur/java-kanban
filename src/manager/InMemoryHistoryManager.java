@@ -23,6 +23,7 @@ public class  InMemoryHistoryManager implements HistoryManager {
         Node<Task> currentNode = this.linkLast(task);
         if (nodes.containsKey(task.getIdTask())){
             removeNode(nodes.get(task.getIdTask()));           //удаление повторяющейся задачи из истории
+            nodes.remove(task.getIdTask());
         }
         nodes.put(task.getIdTask(), currentNode);
     }
@@ -31,6 +32,7 @@ public class  InMemoryHistoryManager implements HistoryManager {
     public void remove(int id) {
         if (nodes.containsKey(id)) {
             removeNode(nodes.get(id));           //удаление задачи из истории при удалении из списка
+            nodes.remove(id);
         }
     }
 
@@ -58,14 +60,19 @@ public class  InMemoryHistoryManager implements HistoryManager {
 
     //удаление повторяющегося элемента и при удалении элемента из списка
     public void removeNode(Node<Task> node){
-        Node<Task> cur = node;
-       if(cur.getPrev() == null){
-           head = head.getNext();
-       }else if(cur.getNext() == null){
+        if(node.getPrev() == null){
+            head = head.getNext();
+            head = new Node<>(null, head.getValue(), head.getNext());
+       }else if(node.getNext() == null){
            tail = tail.getPrev();
-       }else {
-           node.setNext(cur.getNext().getNext());
-           node.setPrev(cur.getPrev().getPrev());
+           tail = new Node<>(tail.getPrev(), tail.getValue(), null);
+       } else if(node.getPrev() == null && node.getNext() == null){
+            head = null;
+            tail = null;
+        }
+        else {
+           node.getPrev().setNext(node.getNext());
+           node.getNext().setPrev(node.getPrev());
        }
     }
 

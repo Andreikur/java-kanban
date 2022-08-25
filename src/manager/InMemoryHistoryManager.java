@@ -60,17 +60,16 @@ public class  InMemoryHistoryManager implements HistoryManager {
 
     //удаление повторяющегося элемента и при удалении элемента из списка
     public void removeNode(Node<Task> node){
-        if(node.getPrev() == null){
-            head = head.getNext();
-            head = new Node<>(null, head.getValue(), head.getNext());
-       }else if(node.getNext() == null){
-           tail = tail.getPrev();
-           tail = new Node<>(tail.getPrev(), tail.getValue(), null);
-       } else if(node.getPrev() == null && node.getNext() == null){
+        if(node.getPrev() == null && node.getNext() == null){
             head = null;
             tail = null;
-        }
-        else {
+        } else if (node.getPrev() == null){
+            head = node.getNext();
+            head.setPrev(null);
+       } else if(node.getNext() == null){
+            tail = node.getPrev();
+            tail.setNext(null);
+       } else {
            node.getPrev().setNext(node.getNext());
            node.getNext().setPrev(node.getPrev());
        }

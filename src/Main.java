@@ -21,6 +21,9 @@ public class Main {
 
         TasksTemplate.addTasksTemplate(taskManager);                   //создаем список задач!!!
 
+        //String filesPath = "history/history.csv";            // путь местонахождения файлов
+        //FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+
         int command = scanner.nextInt();
 
         while (command !=0) {

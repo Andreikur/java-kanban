@@ -9,6 +9,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        String filePath = "history/history.csv";            // путь местонахождения файла
+        FileBackedTasksManager.setFilePath(filePath);
+
         TaskManager taskManager = Managers.getDefault();
         Task currentTask;
         Epic currentEpic;
@@ -19,10 +22,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        TasksTemplate.addTasksTemplate(taskManager);                   //создаем список задач!!!
+        //TasksTemplate.addTasksTemplate(taskManager);                   //создаем список задач!!!
 
-        //String filesPath = "history/history.csv";            // путь местонахождения файлов
-        //FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+        //Восстановление истории из файла
+        File file = new File(filePath);
+        taskManager = FileBackedTasksManager.loadFromFile(file);
 
         int command = scanner.nextInt();
 
@@ -125,7 +129,7 @@ public class Main {
                                 for (Integer idSubtask : currentEpic.getIdSubtask()){
                                     System.out.print(idSubtask + ", ");
                                 }
-                                System.out.println("");
+                                System.out.println();
                                 //historyManager.add(taskManager.getEpic(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");

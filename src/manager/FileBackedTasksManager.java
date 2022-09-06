@@ -4,26 +4,27 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager{
 
-    private String filePath = "history/history.csv";            // путь местонахождения файлов
-    File file = new File(filePath);
+    private static String filePath;
+    private List<Integer> listHistory = new ArrayList<>();
 
     public FileBackedTasksManager(){
         super();
     }
 
-    public FileBackedTasksManager(String filesPath){
-        this.filePath = filesPath;
+    public static void setFilePath(String filePath) {
+        FileBackedTasksManager.filePath = filePath;
     }
 
     public void save(){
         try(FileWriter file = new FileWriter(filePath)){          //FileWriter file = new FileWriter(filePath, true)
-            file.write("id,type,name,status,description,epic \n");
+            file.write("id,type,name,status,description,epic\n");
 
             for (Task task : allTasks.values()){
                 file.write(toString(task) + "\n");
@@ -34,11 +35,80 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             for (Subtask subtask : allSubtasks.values()){
                 file.write(toString(subtask) + "\n");
             }
+            file.write("\n");
             file.write(historyToString(historyManager));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static FileBackedTasksManager  loadFromFile(File file) {
+        FileBackedTasksManager fileBackedTasksManager =new FileBackedTasksManager();
+        try (FileReader reader = new FileReader(file); BufferedReader br = new BufferedReader(reader)) {
+            while (br.ready()) {
+                String str = br.readLine();
+                if (str.equals("id,type,name,status,description,epic")){  //Пропускаем первую строку
+
+                } else if (str.isBlank()) {
+                    str = br.readLine();                                    //читаем строку следующую за пустой
+                    if(!str.isBlank()) {
+                        fileBackedTasksManager.listHistory = historyFromString(str);            // получаем лист с ip запросов
+                        for (Integer id : fileBackedTasksManager.listHistory) {
+                            if (fileBackedTasksManager.allTasks.containsKey(id)) {
+                                fileBackedTasksManager.getTask(id);
+                            } else if (fileBackedTasksManager.allEpics.containsKey(id)) {
+                                fileBackedTasksManager.getEpic(id);
+                            } else {
+                                fileBackedTasksManager.getSubtask(id);
+                            }
+                        }
+                    }
+                } else {
+                    Task task = fileBackedTasksManager.fromString(str);
+                    if (str.contains("SUBTASK")) {
+                        Subtask subtask = new Subtask(task.getTaskName(), task.getTaskDescription(),task.getIdTask(), 0);
+                        String[] dataTask = str.split(",");
+                        int idEpic = Integer.parseInt(dataTask[5]);
+                        subtask.setIdEpic(idEpic);
+                        fileBackedTasksManager.allSubtasks.put(subtask.getIdTask(), subtask);
+                        Epic thisEpic = fileBackedTasksManager.allEpics.get(idEpic);        //заполнение списка Subtasks у Epic
+                        List<Integer> list = thisEpic.getIdSubtask();
+                        list.add(subtask.getIdTask());
+                        thisEpic.setIdSubtask(list);
+                        fileBackedTasksManager.allEpics.put(idEpic, thisEpic);
+                    }else if (str.contains("EPIC")){
+                        Epic epic = new Epic(task.getTaskName(), task.getTaskDescription(),task.getIdTask());
+                        //Epic epic = (Epic) task;       //??? вываливается исключение ClassCastException
+                        fileBackedTasksManager.allEpics.put(epic.getIdTask(), epic);
+                    } else if (str.contains("TASK")) {
+                        fileBackedTasksManager.allTasks.put(task.getIdTask(), task);
+                    }
+                }
+            }
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        return fileBackedTasksManager;
+    }
+
+    static List<Integer> historyFromString(String value){       //создание истории из строки
+        String[] data= value.split(",");
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < data.length; i++) {
+            list.add(Integer.valueOf(data[i]));
+        }
+        return list;
+    }
+
+    private Task fromString(String value){           //создание задачи из строки
+        Task task = new Task();
+        String[] dataTask = value.split(",");
+        task.setIdTask(Integer.parseInt(dataTask[0]));
+        task.setTaskName(dataTask[2]);
+        task.setStatus(Status.valueOf(dataTask[3]));
+        task.setTaskDescription(dataTask[4]);
+        return task;
     }
 
     @Override
@@ -115,16 +185,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     @Override
     public Task getTask(Integer id) {
+        super.getTask(id);
+        save();
         return super.getTask(id);
     }
 
     @Override
     public Epic getEpic(Integer id) {
+        super.getEpic(id);
+        save();
         return super.getEpic(id);
     }
 
     @Override
     public Subtask getSubtask(Integer id) {
+        save();
         return super.getSubtask(id);
     }
 
@@ -153,11 +228,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     static String historyToString(HistoryManager manager){
-        String str = " ";
+        String str = "";
         for (Task task : manager.getHistory()) {
-            str = str + Integer.toString(task.getIdTask()) + ",";
+            str +=  task.getIdTask() + ",";
         }
-        //str = str.substring(0, str.length() - 1);  //убираем последнюю запятую
+        if(str.length() > 0) {
+            str = str.substring(0, str.length() - 1);  //убираем последнюю запятую
+        }
         return str;
     }
 }

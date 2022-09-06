@@ -19,6 +19,8 @@ public class  InMemoryHistoryManager implements HistoryManager {
     }
 
 
+
+
     public void add(Task task){
         Node<Task> currentNode = this.linkLast(task);
         if (nodes.containsKey(task.getIdTask())){

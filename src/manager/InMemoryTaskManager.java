@@ -125,9 +125,9 @@ public class InMemoryTaskManager implements TaskManager {
             thisEpic = allEpics.get(id);
             List<Integer> listIdEpic;
             listIdEpic = thisEpic.getIdSubtask();
-            for (Integer subtaskId : listIdEpic) {                 //удаление всех субтасков входящих в эпик
+            for (Integer subtaskId : listIdEpic) {                 //удаление всех Subtask входящих в эпик
                 allSubtasks.remove(subtaskId);
-                historyManager.remove(subtaskId);                     //удаление из истории всех субтасков
+                historyManager.remove(subtaskId);                     //удаление из истории всех Subtask
             }
             allEpics.remove(id);
             historyManager.remove(id);                          //удаление эпик из истории
@@ -149,7 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
             isNEW = checkingLogic.checking(allSubtasks, idSubtask, Status.NEW);
             isDONE = checkingLogic.checking(allSubtasks, idSubtask, Status.DONE);
             if (epic.getIdSubtask().isEmpty() || isNEW) {
-                epic.setStatus(Status.NEW);                  //если нет субтасков  или все субтаск NEW , статус NEW
+                epic.setStatus(Status.NEW);                  //если нет Subtask или все Subtask NEW, статус NEW
             } else if(isDONE){
                 epic.setStatus(Status.DONE);
             } else {
@@ -201,7 +201,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllSubtask() {
         for (Integer id : allSubtasks.keySet()){
-            historyManager.remove(id);                  //удаление субтаска из истории
+            historyManager.remove(id);                  //удаление Subtask из истории
         }
         allSubtasks.clear();
     }
@@ -210,15 +210,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void dellSubtask(Integer id){
         if (allSubtasks.containsKey(id)){
-            Integer idEpic = getSubtask(id).getIdEpic();  //  получаем ключ эпика к которому привязан субтаск
-            allSubtasks.remove(id);                        // удаляем субтаск
+            Integer idEpic = getSubtask(id).getIdEpic();  //  получаем ключ эпика к которому привязан Subtask
+            allSubtasks.remove(id);                        // удаляем Subtask
             Epic epic = allEpics.get(idEpic);                // получаем эпик
 
-            List<Integer> listIdSubtask = epic.getIdSubtask();  //получаем лист с ID субтасков  эпика
-            listIdSubtask.remove(id);                                //удаляем из листа ID субтасков эпика, ID удаляемого субтаска
-            epic.setIdSubtask(listIdSubtask);                       //обновляем лист ID субтасков эпика
-            updateStatusEpic(epic);                       // обновление статуса и листа входящих в Epic субтасков, для данной Subtask
-            historyManager.remove(id);              // удаление субтаск из истории
+            List<Integer> listIdSubtask = epic.getIdSubtask();  //получаем лист с ID Subtask  эпика
+            listIdSubtask.remove(id);                                //удаляем из листа ID Subtask эпика, ID удаляемого Subtask
+            epic.setIdSubtask(listIdSubtask);                       //обновляем лист ID Subtask эпика
+            updateStatusEpic(epic);                       // обновление статуса и листа входящих в Epic Subtask, для данной Subtask
+            historyManager.remove(id);              // удаление Subtask из истории
         }
         else {
             System.out.println("Subtask с таким ID не существует");

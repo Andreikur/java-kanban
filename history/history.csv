@@ -1,8 +1,7 @@
-id,type,name,status,description,epic 
-6,TASK,t1,NEW,dffde
-1,EPIC,e1,NEW,epic1
-2,EPIC,e2,NEW,epic2
-3,SUBTASK,s1,NEW,subtask1,1
-4,SUBTASK,s2,NEW,subtask2,1
-5,SUBTASK,s3,NEW,subtask3,1
- 1,
+iid,type,name,status,description,epic
+ 1,TASK,t1,NEW,task1
+ 2,EPIC,e1,NEW,epic1
+ 3,EPIC,e2,NEW,epic2
+ 4,SUBTASK,s1,NEW,subtask1,2
+
+ 2

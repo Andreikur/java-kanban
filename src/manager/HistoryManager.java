@@ -1,6 +1,5 @@
 package manager;
 
-import domain.Node;
 import domain.Task;
 import java.util.List;
 

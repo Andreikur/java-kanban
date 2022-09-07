@@ -1,6 +1,5 @@
 package manager;
 
-import domain.Node;
 import domain.Task;
 
 import java.util.*;
@@ -46,7 +45,7 @@ public class  InMemoryHistoryManager implements HistoryManager {
         if (oldTAil == null) {                 //Если добавляется первый узел. Начало и конец это один и тот же элемент
             head = node;
         } else {
-            oldTAil.setNext(node);
+            oldTAil.next = node;
         }
             return node;
     }
@@ -55,26 +54,43 @@ public class  InMemoryHistoryManager implements HistoryManager {
         history.clear();
         Node<Task> cur = head;
             while (cur != null) {
-                history.add(cur.getValue());
-                cur = cur.getNext();
+                history.add(cur.value);
+                cur = cur.next;
             }
         }
 
     //удаление повторяющегося элемента и при удалении элемента из списка
     public void removeNode(Node<Task> node){
-        if(node.getPrev() == null && node.getNext() == null){
+        if(node.prev == null && node.next == null){
             head = null;
             tail = null;
-        } else if (node.getPrev() == null){
-            head = node.getNext();
-            head.setPrev(null);
-       } else if(node.getNext() == null){
-            tail = node.getPrev();
-            tail.setNext(null);
+        } else if (node.prev == null){
+            head = node.next;
+            head.prev = null;
+       } else if(node.next == null){
+            tail = node.prev;
+            tail.next = node;
        } else {
-           node.getPrev().setNext(node.getNext());
-           node.getNext().setPrev(node.getPrev());
+           node.prev.next = node.next;
+           node.next.prev = node.prev;
        }
+    }
+
+    private class Node<Task> {
+        private Task value;
+        private Node<Task> next;
+        private Node<Task> prev;
+
+
+        public Node(Task value) {
+            this.value = value;
+        }
+
+        public Node(Node<Task> prev, Task value, Node<Task> next){
+            this.prev = prev;
+            this.value = value;
+            this.next = next;
+        }
     }
 
 }

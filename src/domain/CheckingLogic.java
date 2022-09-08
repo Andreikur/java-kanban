@@ -33,5 +33,4 @@ public class CheckingLogic {
         }
         return isStatus;
     }
-
 }

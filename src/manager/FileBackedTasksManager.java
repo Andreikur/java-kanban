@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager{
 
     private static String filePath;
@@ -22,10 +21,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         FileBackedTasksManager.filePath = filePath;
     }
 
-    public void save(){
-        try(FileWriter file = new FileWriter(filePath)){          //FileWriter file = new FileWriter(filePath, true)
+    public void save() {
+        try(FileWriter file = new FileWriter(filePath)){
             file.write("id,type,name,status,description,epic\n");
-
             for (Task task : allTasks.values()){
                 file.write(toString(task) + "\n");
             }
@@ -52,7 +50,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
                 } else if (str.isBlank()) {
                     str = br.readLine();                                    //читаем строку следующую за пустой
-                    if(!str.isBlank()) {
+                    if (!str.isBlank()) {
                         fileBackedTasksManager.listHistory = historyFromString(str);            // получаем лист с ip запросов
                         for (Integer id : fileBackedTasksManager.listHistory) {
                             if (fileBackedTasksManager.allTasks.containsKey(id)) {
@@ -104,7 +102,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private Task fromString(String value){           //создание задачи из строки
         Task task = new Task();
         String[] dataTask = value.split(",");
-        task.setIdTask(Integer.parseInt(dataTask[0]));
+        task.setIdTask(Integer. parseInt(dataTask[0]));
         task.setTaskName(dataTask[2]);
         task.setStatus(Status.valueOf(dataTask[3]));
         task.setTaskDescription(dataTask[4]);

@@ -12,7 +12,6 @@ public class TasksTemplate {
             Epic epic = new Epic("e" + i, "epic" + i);
             taskManager.addEpic(epic);
         }
-
         for (int i = 1; i<=3; i++){
             Subtask subtask =new Subtask("s" +i, "subtask" + i, 1);
             taskManager.addSubtask(subtask);

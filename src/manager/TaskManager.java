@@ -3,11 +3,9 @@ package manager;
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
-
 import java.util.List;
 
 public interface TaskManager {
-
 
     //Создать Task
     void addTask(Task task);
@@ -67,5 +65,4 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
 
     List<Task> getHistory();
-
 }

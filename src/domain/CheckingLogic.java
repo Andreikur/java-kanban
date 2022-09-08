@@ -18,7 +18,6 @@ public class CheckingLogic {
     }
 
     public CheckingLogic(){
-
     }
 
     public boolean checking (Map<Integer, Subtask> allSubtask , List<Integer> idSubtask, Status status) {

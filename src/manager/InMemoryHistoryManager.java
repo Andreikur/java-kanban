@@ -8,7 +8,6 @@ public class  InMemoryHistoryManager implements HistoryManager {
 
     private Node<Task> head;
     private Node<Task> tail;
-
     private final   LinkedList<Task> history = new LinkedList<>();
     private final HashMap<Integer, Node<Task>> nodes = new HashMap<>();
 
@@ -16,9 +15,6 @@ public class  InMemoryHistoryManager implements HistoryManager {
         getTasks();
         return  history;
     }
-
-
-
 
     public void add(Task task){
         Node<Task> currentNode = this.linkLast(task);
@@ -80,8 +76,6 @@ public class  InMemoryHistoryManager implements HistoryManager {
         private Task value;
         private Node<Task> next;
         private Node<Task> prev;
-
-
         public Node(Task value) {
             this.value = value;
         }
@@ -92,5 +86,4 @@ public class  InMemoryHistoryManager implements HistoryManager {
             this.next = next;
         }
     }
-
 }

@@ -11,7 +11,6 @@ public class Main {
 
         String filePath = "history/history.csv";            // путь местонахождения файла
         FileBackedTasksManager.setFilePath(filePath);
-
         TaskManager taskManager = Managers.getDefault();
         Task currentTask;
         Epic currentEpic;
@@ -21,13 +20,11 @@ public class Main {
         menu.printMenu1();
         Scanner scanner = new Scanner(System.in);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
         //TasksTemplate.addTasksTemplate(taskManager);                   //создаем список задач!!!
 
         //Восстановление истории из файла
         File file = new File(filePath);
         taskManager = FileBackedTasksManager.loadFromFile(file);
-
         int command = scanner.nextInt();
 
         while (command !=0) {
@@ -45,8 +42,7 @@ public class Main {
                                     System.out.println("ID: " + task.getIdTask() + " - " + task.getTaskName()
                                             + " статус: " + task.getStatus());
                                     }
-                                }
-                            else {
+                                } else {
                                 System.out.println("Список задач данного типа пуст");
                                 }
                             break;
@@ -59,8 +55,9 @@ public class Main {
                                     System.out.println("ID: " + epic.getIdTask() + " - " + epic.getTaskName()
                                             + " статус: " + epic.getStatus());
                                 }
+                            } else {
+                                System.out.println("Список задач данного типа пуст");
                             }
-                            else System.out.println("Список задач данного типа пуст");
                             break;
                         }
                         case 3: {
@@ -71,14 +68,16 @@ public class Main {
                                     System.out.println("ID: " + subtask.getIdTask() + " - " + subtask.getTaskName()
                                             + " статус: " + subtask.getStatus());
                                 }
+                            } else {
+                                System.out.println("Список задач данного типа пуст");
                             }
-                            else System.out.println("Список задач данного типа пуст");
                         }
                         case 0:
                             break;
-                        default: System.out.println("Такого раздела не существует");
+                        default: {
+                            System.out.println("Такого раздела не существует");
+                        }
                     }
-
                     break;
                 }
                 case 2: {
@@ -106,14 +105,11 @@ public class Main {
                                 //historyManager.add(taskManager.getTask(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
-                                }
-                                else {
+                                } else {
                                     taskManager2 = taskManager.getHistory();      //убрать комментарий если не будет использоваться вывод на печать
                                     System.out.println(taskManager2);
                                 }
-                            }
-                            else System.out.println("Задачи с таким ID нет");
-
+                            } else System.out.println("Задачи с таким ID нет");
                             break;
                         }
                         case 2: {
@@ -133,14 +129,14 @@ public class Main {
                                 //historyManager.add(taskManager.getEpic(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
-                                }
-                                else {
+                                } else {
                                     taskManager2 = taskManager.getHistory();
                                     System.out.println(taskManager2);
                                 }
-
                             }
-                            else System.out.println("Задачи с таким ID нет");
+                            else {
+                                System.out.println("Задачи с таким ID нет");
+                            }
                             break;
                         }
                         case 3: {
@@ -153,18 +149,14 @@ public class Main {
                                         + "\n Описание: " + currentSubtask.getTaskDescription()
                                         + "\n Статус: " + currentSubtask.getStatus()
                                         + "\n Входит в Epic c ID: " + currentSubtask.getIdEpic());
-
                                 //historyManager.add(taskManager.getSubtask(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
-                                }
-                                else {
+                                } else {
                                     taskManager2 = taskManager.getHistory();      //убрать комментарий если не будет использоваться вывод на печать
                                     System.out.println(taskManager2);
                                 }
-                            }
-                            else System.out.println("Задачи с таким ID нет");
-
+                            } else System.out.println("Задачи с таким ID нет");
                             break;
                         }
                         case 0: {
@@ -228,14 +220,12 @@ public class Main {
                             System.out.println("Укажите новый статус (NEW, IN_PROGRESS, DONE)");
                             String status = scanner.next();
                             Status status1 = Status.valueOf(status);  //приведение к типу Enum
-
                             Task task = taskManager.getTask(id);
                             if (task != null){
                             task.setStatus(status1);
                             taskManager.updateTask(task);
                             System.out.println("Статус обновлен");
-                            }
-                            else {
+                            } else {
                                 System.out.println("Задачи с таким ID нет");
                             }
                             break;
@@ -254,14 +244,12 @@ public class Main {
                             System.out.println("Укажите новый статус (NEW, IN_PROGRESS, DONE)");
                             String status = scanner.next();
                             Status status1 = Status.valueOf(status);  //приведение к типу Enum
-
                             Subtask subtask = taskManager.getSubtask(id);
                             if (subtask != null) {
                                 subtask.setStatus(status1);
                                 taskManager.updateSubtask(subtask);
                                 System.out.println("Статус обновлен");
-                            }
-                            else {
+                            } else {
                                 System.out.println("Задачи с таким ID нет");
                             }
                             break;

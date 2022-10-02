@@ -50,7 +50,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
                 } else if (str.isBlank()) {
                     str = br.readLine();                                    //читаем строку следующую за пустой
-                    if (!str.isBlank()) {
+                    if (str == null){
+                        break;
+                    } else if (!str.isBlank()) {
                         fileBackedTasksManager.listHistory = historyFromString(str);            // получаем лист с ip запросов
                         for (Integer id : fileBackedTasksManager.listHistory) {
                             if (fileBackedTasksManager.allTasks.containsKey(id)) {
@@ -235,4 +237,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
         return str;
     }
+
+
 }

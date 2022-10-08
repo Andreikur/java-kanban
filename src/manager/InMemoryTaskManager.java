@@ -5,6 +5,7 @@ import domain.Epic;
 import domain.Subtask;
 import domain.Task;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +18,16 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Subtask> allSubtasks = new HashMap<>();
     protected final   HistoryManager historyManager = Managers.getDefaultHistory();
 
+    protected final TreeSet treeSet = new TreeSet();
+    private TaskDataComparator comparator = new TaskDataComparator();
+
     //Создать Task
     @Override
     public void addTask(Task task){
         id++;
         task.setIdTask(id);
         allTasks.put(id, task);
+        treeSet.sortingByDate(task);        //добавление в список отсортированный по времени
     }
 
     //получить список всех задач Task
@@ -74,6 +79,8 @@ public class InMemoryTaskManager implements TaskManager {
         id++;
         epic.setIdTask(id);
         allEpics.put(id, epic);
+
+
     }
 
     //получить список всех задач Epic
@@ -168,6 +175,8 @@ public class InMemoryTaskManager implements TaskManager {
             List <Integer> listIdEpic = thisEpic.getIdSubtask();
             listIdEpic.add(id);
             updateStatusEpic(thisEpic);                            // обновление статуса Epic, для данной Subtask
+            addEpicDataTime(thisEpic);                              //обновление времени в Epic
+            treeSet.sortingByDate(subtask);                            //добавление в список отсортированный по времени
         } else {
             System.out.println("Задачи Epic с таким ID нет");
         }
@@ -227,4 +236,38 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Task> getHistory(){
         return historyManager.getHistory();
     }
+
+    @Override
+    public TreeSet getTreeSet(){
+        return treeSet;
+    }
+
+    public void setId(int id) {
+        if (this.id < id) {
+            this.id = id;
+        }
+    }
+
+    //запись времени в Epic
+    private void addEpicDataTime(Epic epic){
+        //Task patternTask = new Task("patternTask", "patternTaskDescription", 0, LocalDateTime.MIN, LocalDateTime.MAX);
+        List<Integer> listIdSubtasks = epic.getIdSubtask();
+        Task previousTask = null;
+        for (int id : listIdSubtasks){
+            if (previousTask != null) {
+                if (comparator.compare(allSubtasks.get(id), previousTask) <= 0) {
+                    if(allSubtasks.get(id).getStartTime() != null) {
+                        epic.setStartTime(allSubtasks.get(id).getStartTime());
+                    }
+                }
+                if (comparator.compare(allSubtasks.get(id), previousTask) >= 0) {
+                    if(allSubtasks.get(id).getEndTime()  != null) {
+                        epic.setEndTime(allSubtasks.get(id).getEndTime());
+                    }
+                }
+            }
+            previousTask = allSubtasks.get(id);
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ public class Menu {
         System.out.println("4 - Создать задачу");
         System.out.println("5 - Обновить статус задачи");
         System.out.println("6 - Удалить задачу по идентификатору");
+        System.out.println("7 - Вывести список задач в порядке приоритета");
         System.out.println("0 - Завершить работу программы");
     }
 
@@ -17,5 +18,4 @@ public class Menu {
         System.out.println("3 - Subtask");
         System.out.println("0 - Выйти на уровень выше ");
     }
-
 }

@@ -72,17 +72,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                         int idEpic = Integer.parseInt(dataTask[5]);
                         subtask.setIdEpic(idEpic);
                         fileBackedTasksManager.allSubtasks.put(subtask.getIdTask(), subtask);
+                        fileBackedTasksManager.setId(subtask.getIdTask());                  //изменение последнего ID в классе InMemoryTaskManager
                         Epic thisEpic = fileBackedTasksManager.allEpics.get(idEpic);        //заполнение списка Subtasks у Epic
                         List<Integer> list = thisEpic.getIdSubtask();
                         list.add(subtask.getIdTask());
                         thisEpic.setIdSubtask(list);
                         fileBackedTasksManager.allEpics.put(idEpic, thisEpic);
+                        fileBackedTasksManager.treeSet.sortingByDate(subtask);
                     }else if (str.contains("EPIC")){
                         Epic epic = new Epic(task.getTaskName(), task.getTaskDescription(),task.getIdTask());
                         //Epic epic = (Epic) task;       //??? вываливается исключение ClassCastException
+                        fileBackedTasksManager.setId(epic.getIdTask());                  //изменение последнего ID в классе InMemoryTaskManager
                         fileBackedTasksManager.allEpics.put(epic.getIdTask(), epic);
                     } else if (str.contains("TASK")) {
                         fileBackedTasksManager.allTasks.put(task.getIdTask(), task);
+                        fileBackedTasksManager.setId(task.getIdTask());                  //изменение последнего ID в классе InMemoryTaskManager
+                        fileBackedTasksManager.treeSet.sortingByDate(task);
                     }
                 }
             }
@@ -104,7 +109,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private Task fromString(String value){           //создание задачи из строки
         Task task = new Task();
         String[] dataTask = value.split(",");
-        task.setIdTask(Integer. parseInt(dataTask[0]));
+        task.setIdTask(Integer.parseInt(dataTask[0]));
         task.setTaskName(dataTask[2]);
         task.setStatus(Status.valueOf(dataTask[3]));
         task.setTaskDescription(dataTask[4]);
@@ -238,5 +243,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return str;
     }
 
-
+    public void setId(int id) {
+        super.setId(id);
+    }
 }

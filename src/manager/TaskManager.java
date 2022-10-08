@@ -65,4 +65,8 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
 
     List<Task> getHistory();
+
+    TreeSet getTreeSet();
+
+    void setId(int id);
 }

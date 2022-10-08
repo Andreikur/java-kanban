@@ -30,4 +30,29 @@ public class Epic extends Task {
     public void setIdSubtask(List<Integer> idSubtask) {
         this.idSubtask = idSubtask;
     }
+
+    @Override
+    public String toString(){
+        String  strStartTime = "";
+        String  strEndTime = "";
+        String str = "";
+        for (Integer idSubtask : idSubtask) {
+            str = str + ", " + Integer.toString(idSubtask);
+        }
+        if (getStartTime() != null) {
+            strStartTime = getStartTime().format(formatter);
+        }
+        if (getEndTime() != null) {
+            strEndTime = getEndTime().format(formatter);
+        }
+        return "Epic{" +
+                "Название='" + getTaskName() + '\'' +
+                ", описание=" + getTaskDescription() +
+                ", Id =" + getIdTask() +
+                ", статус=" + getStatus() +
+                ", Subtasks=" + str +
+                ", T старта=" + strStartTime +
+                ", Т окончания=" + strEndTime +
+                '}';
+    }
 }

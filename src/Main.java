@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -97,16 +98,18 @@ public class Main {
                             currentTask =taskManager.getTask(id);
 
                             if(currentTask != null) {
-                                System.out.println(" ID: " + currentTask.getIdTask()
+                                /*System.out.println(" ID: " + currentTask.getIdTask()
                                         + "\n Название: " +currentTask.getTaskName()
                                         + "\n Описание: " + currentTask.getTaskDescription()
                                         + "\n Статус: " + currentTask.getStatus());
+                                */
+                                System.out.println(currentTask.toString());
 
                                 //historyManager.add(taskManager.getTask(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
                                 } else {
-                                    taskManager2 = taskManager.getHistory();      //убрать комментарий если не будет использоваться вывод на печать
+                                    taskManager2 = taskManager.getHistory();
                                     System.out.println(taskManager2);
                                 }
                             } else System.out.println("Задачи с таким ID нет");
@@ -117,14 +120,15 @@ public class Main {
                             int id = scanner.nextInt();
                             currentEpic = taskManager.getEpic(id);
                             if(currentEpic != null) {
-                                System.out.println(" ID: " + currentEpic.getIdTask()
+                                /*System.out.println(" ID: " + currentEpic.getIdTask()
                                         + "\n Название: " + currentEpic.getTaskName()
                                         + "\n Описание: " + currentEpic.getTaskDescription()
                                         + "\n Статус: " + currentEpic.getStatus()
                                         + "\n Номера подзадач: ");
                                 for (Integer idSubtask : currentEpic.getIdSubtask()){
                                     System.out.print(idSubtask + ", ");
-                                }
+                                }*/
+                                System.out.println(currentEpic.toString());
                                 System.out.println();
                                 //historyManager.add(taskManager.getEpic(id));
                                 if(taskManager.getHistory() == null) {
@@ -144,11 +148,12 @@ public class Main {
                             int id = scanner.nextInt();
                             currentSubtask = taskManager.getSubtask(id);
                             if(currentSubtask != null) {
-                                System.out.println(" ID: " + currentSubtask.getIdTask()
+                                /*System.out.println(" ID: " + currentSubtask.getIdTask()
                                         + "\n Название: " + currentSubtask.getTaskName()
                                         + "\n Описание: " + currentSubtask.getTaskDescription()
                                         + "\n Статус: " + currentSubtask.getStatus()
-                                        + "\n Входит в Epic c ID: " + currentSubtask.getIdEpic());
+                                        + "\n Входит в Epic c ID: " + currentSubtask.getIdEpic());*/
+                                System.out.println(currentSubtask.toString());
                                 //historyManager.add(taskManager.getSubtask(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
@@ -177,7 +182,24 @@ public class Main {
                             String taskName = bufferedReader.readLine();
                             System.out.println("Введите описание задачи");
                             String taskDescription = bufferedReader.readLine();
-                            Task task =new Task(taskName, taskDescription);
+                            //System.out.println("Введите предполагаемое время начала выполнения задачи в " +
+                            //        "формате(уууу-MM-ddTHH:mm)");
+                            //String startTimeString = bufferedReader.readLine();
+                            //String startTimeString = "2022-10-01T15:00";
+                            //LocalDateTime startTime = LocalDateTime.parse(startTimeString + ":00");
+                            System.out.println("Введите предполагаемое время начала выполнения задачи");
+                            //System.out.print("Месяц(число от 1 до 12): ");
+                            //int month = scanner.nextInt();
+                            System.out.print("число (в диапазоне 1 - 31): ");
+                            int dayOfMonth = scanner.nextInt();
+                            System.out.print("час (в диапазоне 0 - 23): ");
+                            int hour = scanner.nextInt();
+                            System.out.print("минуты(в диапазоне 0 - 60): ");
+                            int minute = scanner.nextInt();
+                            LocalDateTime startTime = LocalDateTime.of(2022, 11, dayOfMonth, hour, minute);
+                            System.out.println("Введите время выполнения задачи в минутах");
+                            long duration = scanner.nextLong();
+                            Task task =new Task(taskName, taskDescription, duration, startTime);
                             taskManager.addTask(task);
                             break;
                         }
@@ -197,7 +219,20 @@ public class Main {
                             String taskName = bufferedReader.readLine();
                             System.out.println("Введите описание задачи (Subtask)");
                             String taskDescription = bufferedReader.readLine();
-                            Subtask subtask = new Subtask(taskName, taskDescription, idEpic);
+                            System.out.println("Введите предполагаемое время начала выполнения задачи");
+                            //System.out.print("Месяц(число от 1 до 12): ");
+                            //int month = scanner.nextInt();
+                            System.out.print("число (в диапазоне 1 - 31): ");
+                            int dayOfMonth = scanner.nextInt();
+                            System.out.print("час (в диапазоне 0 - 23): ");
+                            int hour = scanner.nextInt();
+                            System.out.print("минуты(в диапазоне 0 - 60): ");
+                            int minute = scanner.nextInt();
+                            LocalDateTime startTime = LocalDateTime.of(2022, 11, dayOfMonth, hour, minute);
+                            System.out.println("Введите время выполнения задачи в минутах");
+                            long duration = scanner.nextLong();
+
+                            Subtask subtask = new Subtask(taskName, taskDescription, duration, startTime, idEpic);
                             taskManager.addSubtask(subtask);
                             break;
                         }
@@ -292,6 +327,10 @@ public class Main {
                             System.out.println("Такого раздела не существует");
                     }
                     break;
+                }
+                case 7: {
+                    taskManager.getTreeSet().printTreeSet();
+
                 }
                 default:
                     System.out.println("Такого раздела не существует");

@@ -5,6 +5,7 @@ import domain.Subtask;
 import domain.Task;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public void save() {
         try(FileWriter file = new FileWriter(filePath)){
-            file.write("id,type,name,status,description,epic\n");
+            file.write("id,type,name,status,description,duration,startTime,endTime,epic\n");
             for (Task task : allTasks.values()){
                 file.write(toString(task) + "\n");
             }
@@ -46,7 +47,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         try (FileReader reader = new FileReader(file); BufferedReader br = new BufferedReader(reader)) {
             while (br.ready()) {
                 String str = br.readLine();
-                if (str.equals("id,type,name,status,description,epic")){  //Пропускаем первую строку
+                if (str.equals("id,type,name,status,description,duration,startTime,endTime,epic")){  //Пропускаем первую строку
 
                 } else if (str.isBlank()) {
                     str = br.readLine();                                    //читаем строку следующую за пустой
@@ -69,7 +70,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     if (str.contains("SUBTASK")) {
                         Subtask subtask = new Subtask(task.getTaskName(), task.getTaskDescription(),task.getIdTask(), 0);
                         String[] dataTask = str.split(",");
-                        int idEpic = Integer.parseInt(dataTask[5]);
+                        int idEpic = Integer.parseInt(dataTask[7]);
                         subtask.setIdEpic(idEpic);
                         fileBackedTasksManager.allSubtasks.put(subtask.getIdTask(), subtask);
                         fileBackedTasksManager.setId(subtask.getIdTask());                  //изменение последнего ID в классе InMemoryTaskManager
@@ -113,6 +114,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         task.setTaskName(dataTask[2]);
         task.setStatus(Status.valueOf(dataTask[3]));
         task.setTaskDescription(dataTask[4]);
+        task.setDuration(Long.parseLong(dataTask[5]));
+        if(!dataTask[6].equals("null")){
+            task.setStartTime(LocalDateTime.parse(dataTask[6]));
+        }
+        if(!dataTask[7].equals("null")) {
+            task.setEndTime(LocalDateTime.parse(dataTask[7]));
+        }
         return task;
     }
 
@@ -213,14 +221,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 + TypesOfTasks.TASK + ","
                 + task.getTaskName() + ","
                 + task.getStatus() + ","
-                + task.getTaskDescription();
+                + task.getTaskDescription() + ","
+                + task.getDuration() + ","
+                + task.getStartTime() + ","
+                + task.getEndTime();
     }
     public String toString(Epic epic) {
         return epic.getIdTask() + ","
                 + TypesOfTasks.EPIC + ","
                 + epic.getTaskName() + ","
                 + epic.getStatus() + ","
-                + epic.getTaskDescription();
+                + epic.getTaskDescription() + ","
+                + epic.getDuration() + ","
+                + epic.getStartTime() + ","
+                + epic.getEndTime();
     }
 
     public String toString(Subtask subtask) {
@@ -229,6 +243,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 + subtask.getTaskName() + ","
                 + subtask.getStatus() + ","
                 + subtask.getTaskDescription() + ","
+                + subtask.getDuration() + ","
+                + subtask.getStartTime() + ","
+                + subtask.getEndTime() + ","
                 + subtask.getIdEpic();
     }
 

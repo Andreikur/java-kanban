@@ -330,7 +330,6 @@ public class Main {
                 }
                 case 7: {
                     taskManager.getTreeSet().printTreeSet();
-
                 }
                 default:
                     System.out.println("Такого раздела не существует");

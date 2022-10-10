@@ -20,7 +20,6 @@ public class Subtask extends Task {
         this.idEpic = idEpic;
 
         setEndTime(startTime.plusMinutes(duration));
-
     }
 
     public Subtask() {

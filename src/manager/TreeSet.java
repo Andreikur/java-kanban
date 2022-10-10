@@ -2,78 +2,72 @@ package manager;
 
 import domain.Task;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TreeSet {
 
-    private final List<Task> sortedByDate = new ArrayList<>();
+    private final List<Task> listSortedByDate = new ArrayList<>();
     private TaskDataComparator comparator = new TaskDataComparator();
 
-    public List<Task> getSortedByDate() {
-        return sortedByDate;
+    public List<Task> getListSortedByDate() {
+        return listSortedByDate;
     }
 
     public void sortingByDate (Task task){
-        if(task.getStartTime() == null || sortedByDate.size() == 0) {
-            sortedByDate.add(task);                 //если нет времени начала, добавляем в конец списка
+        if(task.getStartTime() == null || listSortedByDate.size() == 0) {
+            listSortedByDate.add(task);                 //если нет времени начала, добавляем в конец списка
         } else {
-            for(int i = 0; i < sortedByDate.size(); i++){
-                if (sortedByDate.get(i).getStartTime() == null){
-                    sortedByDate.add(i, task);
+            int size = listSortedByDate.size();
+            for (int i = 0; i < size; i++) {
+                if (listSortedByDate.get(i).getStartTime() == null) {
+                    listSortedByDate.add(i, task);
                     break;
-                }
-                if (comparator.compare(task, sortedByDate.get(i)) <= 0){        // если первый меньше или равен второму
-                    sortedByDate.add(i, task);
+                } else if (comparator.compare(task, listSortedByDate.get(i)) <= 0) {        // если первый меньше или равен второму
+                    listSortedByDate.add(i, task);
                     break;
+                } else if (i == size - 1 ) {
+                    listSortedByDate.add(task);
                 }
             }
         }
     }
 
     //проверка пересечений по времени
-    public void checkingIntersections(Task task){
+    public boolean checkingIntersections (Task task) throws IllegalArgumentException {
+        boolean isIntersection = true;
+        for (Task oldTask : listSortedByDate){
 
+            try {
+                if ((comparator.compareDataTime(task.getStartTime(), oldTask.getStartTime()) >= 0
+                        & comparator.compareDataTime(task.getStartTime(), oldTask.getEndTime()) <= 0)
+                        || (comparator.compareDataTime(task.getEndTime(), oldTask.getStartTime()) >= 0
+                        & comparator.compareDataTime(task.getEndTime(), oldTask.getEndTime()) <= 0)) {
+                    isIntersection = false;
+                    System.out.println("Диапазон времени " + task.getTaskName() + "пересекается с " + oldTask.getTaskName() + ", задача не добавлена");
+                }
+            }
+            catch (Throwable exception){
+
+            }
+        }
+        return isIntersection;
     }
 
     public void printTreeSet(){
-        for (Task task : sortedByDate){
+        for (Task task : listSortedByDate){
             System.out.println(task.toString());
         }
     }
 
-
-
-    /*
-    public void removeNode(Node<Task> node){
-        if(node.prev == null && node.next == null){
-            head = null;
-            tail = null;
-        } else if (node.prev == null){
-            head = node.next;
-            head.prev = null;
-        } else if(node.next == null){
-            tail = node.prev;
-            tail.next = null;
-        } else {
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
+    //удаление из списка при удалении задачи
+    public void remove(int id){
+        for (int i = 0; i < listSortedByDate.size(); i++){
+            if (listSortedByDate.get(i).getIdTask() == id){
+                listSortedByDate.remove(i);
+                break;
+            }
         }
     }
 
-    private class Node<Task> {
-        private Task value;
-        private Node<Task> next;
-        private Node<Task> prev;
-        public Node(Task value) {
-            this.value = value;
-        }
-
-        public Node(Node<Task> prev, Task value, Node<Task> next){
-            this.prev = prev;
-            this.value = value;
-            this.next = next;
-        }
-    }*/
 }

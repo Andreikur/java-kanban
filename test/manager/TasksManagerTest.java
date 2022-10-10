@@ -6,6 +6,7 @@ import domain.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class TasksManagerTest<T extends TaskManager> {
@@ -14,8 +15,11 @@ public abstract class TasksManagerTest<T extends TaskManager> {
     protected Task task = new Task("testTask", "testEpicDescription");
     protected Task task2 = new Task("testTask2", "testEpicDescription2");
     protected Epic epic = new Epic("testEpic", "testEpicDescription");
-    protected Subtask subtask1 = new Subtask("subtask1", "testSubtaskDescription1", 1);
-    protected Subtask subtask2 = new Subtask("subtask2", "testSubtaskDescription2", 1);
+
+    protected LocalDateTime localDateTime1 = LocalDateTime.of(2022,10, 1, 1, 10);
+    protected LocalDateTime localDateTime2 = LocalDateTime.of(2022,10, 1, 3, 30);
+    protected Subtask subtask1 = new Subtask("subtask1", "testSubtaskDescription1", 10 ,  localDateTime1, 1);
+    protected Subtask subtask2 = new Subtask("subtask2", "testSubtaskDescription2", 15, localDateTime2, 1);
 
     @Test
     void addTaskTest(){
@@ -246,6 +250,5 @@ public abstract class TasksManagerTest<T extends TaskManager> {
 
         Assertions.assertEquals(Status.DONE, actualSubtask1.getStatus(), "Статус не обновлен");
     }
-
 
 }

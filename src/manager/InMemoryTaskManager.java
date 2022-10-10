@@ -26,8 +26,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void addTask(Task task){
         id++;
         task.setIdTask(id);
-        allTasks.put(id, task);
-        treeSet.sortingByDate(task);        //добавление в список отсортированный по времени
+        if (treeSet.checkingIntersections(task)) {  // если есть пересечение по времени задача не добавляется
+            allTasks.put(id, task);
+            treeSet.sortingByDate(task);        //добавление в список отсортированный по времени
+        }
     }
 
     //получить список всех задач Task
@@ -51,6 +53,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllTasks() {
         for (Integer id : allTasks.keySet()){
             historyManager.remove(id);                  //удаление таска из истории
+            treeSet.remove(id);                         //удаление таска из сортированного списка
         }
         allTasks.clear();
     }
@@ -61,6 +64,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (allTasks.containsKey(id)){
             allTasks.remove(id);
             historyManager.remove(id);                  //удаление таска из истории
+            treeSet.remove(id);                         //удаление таска из сортированного списка
+
         }
         else {
             System.out.println("Task с таким ID не существует");
@@ -170,13 +175,15 @@ public class InMemoryTaskManager implements TaskManager {
         if (allEpics.containsKey(subtask.getIdEpic())) {
             id++;
             subtask.setIdTask(id);
-            allSubtasks.put(id, subtask);
+            if (treeSet.checkingIntersections(subtask)) {           // если есть пересечение по времени задача не добавляется
+                allSubtasks.put(id, subtask);
+                treeSet.sortingByDate(subtask);                            //добавление в список отсортированный по времени
+            }
             Epic thisEpic = allEpics.get(subtask.getIdEpic());
             List <Integer> listIdEpic = thisEpic.getIdSubtask();
             listIdEpic.add(id);
             updateStatusEpic(thisEpic);                            // обновление статуса Epic, для данной Subtask
             addEpicDataTime(thisEpic);                              //обновление времени в Epic
-            treeSet.sortingByDate(subtask);                            //добавление в список отсортированный по времени
         } else {
             System.out.println("Задачи Epic с таким ID нет");
         }
@@ -203,6 +210,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubtask() {
         for (Integer id : allSubtasks.keySet()){
             historyManager.remove(id);                  //удаление Subtask из истории
+            treeSet.remove(id);                         //удаление таска из сортированного списка
         }
         allSubtasks.clear();
     }
@@ -219,6 +227,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setIdSubtask(listIdSubtask);                       //обновляем лист ID Subtask эпика
             updateStatusEpic(epic);                       // обновление статуса и листа входящих в Epic Subtask, для данной Subtask
             historyManager.remove(id);              // удаление Subtask из истории
+            treeSet.remove(id);                         //удаление таска из сортированного списка
         } else {
             System.out.println("Subtask с таким ID не существует");
         }
@@ -250,7 +259,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     //запись времени в Epic
     private void addEpicDataTime(Epic epic){
-        //Task patternTask = new Task("patternTask", "patternTaskDescription", 0, LocalDateTime.MIN, LocalDateTime.MAX);
         List<Integer> listIdSubtasks = epic.getIdSubtask();
         Task previousTask = null;
         for (int id : listIdSubtasks){

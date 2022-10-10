@@ -2,6 +2,7 @@ package manager;
 
 import domain.Task;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 
 class TaskDataComparator implements Comparator<Task> {
@@ -26,5 +27,9 @@ class TaskDataComparator implements Comparator<Task> {
                 return o1.getStartTime().compareTo(o2.getStartTime());
             }
         }
+    }
+
+    public int compareDataTime(LocalDateTime o1, LocalDateTime o2){
+            return o1.compareTo(o2);
     }
 }

@@ -26,6 +26,7 @@ public class Task {
         endTime = startTime.plusMinutes(duration);
     }
 
+
     public Task(String taskName, String taskDescription, long duration, LocalDateTime startTime, LocalDateTime endTime) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;

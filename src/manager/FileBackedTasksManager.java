@@ -107,6 +107,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return list;
     }
 
+    //по моему это видно посредством соответствующих сеттеров
     private Task fromString(String value){           //создание задачи из строки
         Task task = new Task();
         String[] dataTask = value.split(",");
@@ -216,6 +217,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return super.getSubtask(id);
     }
 
+    // В классах задач toString настроен для более читаемого отображения в консоли.
+    //toString здесь настроен для формирования строки в методе save.
     public String toString(Task task) {
         return task.getIdTask() + ","
                 + TypesOfTasks.TASK + ","

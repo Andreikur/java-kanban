@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CheckingLogic {
-    String status;
+    private String status;
     HashMap<Integer, Subtask> allSubtask;
     List<Integer> idSubtask;
 
@@ -17,7 +17,7 @@ public class CheckingLogic {
         this.status = status;
     }
 
-    public CheckingLogic(){
+    public CheckingLogic(){                 //Вызывается в классе InMemoryTaskManager строка 152
     }
 
     public boolean checking (Map<Integer, Subtask> allSubtask , List<Integer> idSubtask, Status status) {

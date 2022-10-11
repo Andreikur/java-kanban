@@ -30,21 +30,21 @@ public class TreeSet {
                     listSortedByDate.add(task);
                 }
             }
-        }
+         }
     }
 
     //проверка пересечений по времени
     public boolean checkingIntersections (Task task) throws IllegalArgumentException {
         boolean isIntersection = true;
         for (Task oldTask : listSortedByDate){
-
             try {
                 if ((comparator.compareDataTime(task.getStartTime(), oldTask.getStartTime()) >= 0
                         & comparator.compareDataTime(task.getStartTime(), oldTask.getEndTime()) <= 0)
                         || (comparator.compareDataTime(task.getEndTime(), oldTask.getStartTime()) >= 0
                         & comparator.compareDataTime(task.getEndTime(), oldTask.getEndTime()) <= 0)) {
                     isIntersection = false;
-                    System.out.println("Диапазон времени " + task.getTaskName() + "пересекается с " + oldTask.getTaskName() + ", задача не добавлена");
+                    System.out.println("Диапазон времени " + task.getTaskName() + "пересекается с "
+                            + oldTask.getTaskName() + ", задача не добавлена");
                 }
             }
             catch (Throwable exception){

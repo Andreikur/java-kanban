@@ -15,7 +15,7 @@ public class Task {
     private LocalDateTime startTime;                // дата, когда предполагается приступить к выполнению задачи
     private LocalDateTime endTime;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
 
     public Task(String taskName, String taskDescription, long duration, LocalDateTime startTime) {
         this.taskName = taskName;

@@ -1,9 +1,10 @@
 //создаем 2 задачи эпик, и 3 подзадачи входящие в первый эпик.
 
-package manager;
+package manager.auxiliary;
 
 import domain.Epic;
 import domain.Subtask;
+import manager.taskManager.TaskManager;
 
 public class TasksTemplate {
 

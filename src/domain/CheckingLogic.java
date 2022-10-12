@@ -1,6 +1,6 @@
 package domain;
 
-import manager.Status;
+import manager.enums.Status;
 
 import java.util.List;
 import java.util.HashMap;

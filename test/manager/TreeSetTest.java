@@ -3,15 +3,14 @@ package manager;
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
+import manager.TreeSet.TreeSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class TreeSetTest extends TreeSet{
+public class TreeSetTest extends TreeSet {
 
     TreeSet treeSet;
     protected LocalDateTime localDateTime1 = LocalDateTime.of(2022,10, 1, 1, 10);

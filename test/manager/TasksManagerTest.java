@@ -3,6 +3,8 @@ package manager;
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
+import manager.enums.Status;
+import manager.taskManager.TaskManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

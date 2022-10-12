@@ -1,6 +1,7 @@
-package manager;
+package manager.TreeSet;
 
 import domain.Task;
+import manager.auxiliary.TaskDataComparator;
 
 import java.util.ArrayList;
 import java.util.List;

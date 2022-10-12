@@ -1,6 +1,6 @@
 package domain;
 
-import manager.Status;
+import manager.enums.Status;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

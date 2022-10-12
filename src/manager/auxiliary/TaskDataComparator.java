@@ -1,11 +1,11 @@
-package manager;
+package manager.auxiliary;
 
 import domain.Task;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 
-class TaskDataComparator implements Comparator<Task> {
+public class TaskDataComparator implements Comparator<Task> {
 
     //+ первый элемент > второго
     //0 первый = второму

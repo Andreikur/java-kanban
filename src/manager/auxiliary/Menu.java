@@ -1,6 +1,8 @@
+package manager.auxiliary;
+
 public class Menu {
 
-    void printMenu1 () {
+    public void printMenu1 () {
         System.out.println("Что вы хотите сделать?");
         System.out.println("1 - Получить список всех задач");
         System.out.println("2 - Удалить все задачи");
@@ -12,7 +14,7 @@ public class Menu {
         System.out.println("0 - Завершить работу программы");
     }
 
-    void printMenu2 () {
+    public void printMenu2 () {
         System.out.println("1 - Task");
         System.out.println("2 - Epic");
         System.out.println("3 - Subtask");

@@ -1,9 +1,14 @@
-package manager;
+package manager.taskManager;
 
 import domain.CheckingLogic;
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
+import manager.*;
+import manager.TreeSet.TreeSet;
+import manager.auxiliary.TaskDataComparator;
+import manager.enums.Status;
+import manager.historyManager.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Task> allTasks = new HashMap<>();
     protected final Map<Integer, Epic> allEpics = new HashMap<>();
     protected final Map<Integer, Subtask> allSubtasks = new HashMap<>();
-    protected final   HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     protected final TreeSet treeSet = new TreeSet();
     private final TaskDataComparator comparator = new TaskDataComparator();

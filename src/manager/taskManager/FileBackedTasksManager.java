@@ -1,15 +1,18 @@
-package manager;
+package manager.taskManager;
 
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
+import manager.enums.Status;
+import manager.enums.TypesOfTasks;
+import manager.historyManager.HistoryManager;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager{
+public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
 
     private static String filePath;
     private List<Integer> listHistory = new ArrayList<>();

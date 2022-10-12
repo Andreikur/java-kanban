@@ -1,8 +1,10 @@
-package manager;
+package manager.taskManager;
 
 import domain.Epic;
 import domain.Subtask;
 import domain.Task;
+import manager.TreeSet.TreeSet;
+
 import java.util.List;
 
 public interface TaskManager {

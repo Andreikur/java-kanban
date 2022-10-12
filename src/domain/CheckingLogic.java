@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckingLogic {
+    public class CheckingLogic {
     private String status;
-    HashMap<Integer, Subtask> allSubtask;
-    List<Integer> idSubtask;
+    private HashMap<Integer, Subtask> allSubtask;
+    private List<Integer> idSubtask;
 
     public CheckingLogic(HashMap<Integer, Subtask> allSubtask, List<Integer> idSubtask, String status) {
         this.allSubtask = allSubtask;

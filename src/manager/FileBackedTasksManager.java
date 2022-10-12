@@ -69,8 +69,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     Task task = fileBackedTasksManager.fromString(str);
                     if (str.contains("SUBTASK")) {
                         Subtask subtask = new Subtask(task.getTaskName(), task.getTaskDescription(),task.getIdTask(), 0);
+                        subtask.setDuration(task.getDuration());
+                        subtask.setStartTime(task.getStartTime());
+                        subtask.setEndTime(task.getEndTime());
+                        subtask.setStatus(task.getStatus());
                         String[] dataTask = str.split(",");
-                        int idEpic = Integer.parseInt(dataTask[7]);
+                        int idEpic = Integer.parseInt(dataTask[8]);
                         subtask.setIdEpic(idEpic);
                         fileBackedTasksManager.allSubtasks.put(subtask.getIdTask(), subtask);
                         fileBackedTasksManager.setId(subtask.getIdTask());                  //изменение последнего ID в классе InMemoryTaskManager
@@ -81,7 +85,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                         fileBackedTasksManager.allEpics.put(idEpic, thisEpic);
                         fileBackedTasksManager.treeSet.sortingByDate(subtask);
                     }else if (str.contains("EPIC")){
-                        Epic epic = new Epic(task.getTaskName(), task.getTaskDescription(),task.getIdTask());
+                        Epic epic = new Epic(task.getTaskName(), task.getTaskDescription(),task.getIdTask()
+                                , task.getStartTime(), task.getStartTime());
                         //Epic epic = (Epic) task;       //??? вываливается исключение ClassCastException
                         fileBackedTasksManager.setId(epic.getIdTask());                  //изменение последнего ID в классе InMemoryTaskManager
                         fileBackedTasksManager.allEpics.put(epic.getIdTask(), epic);
@@ -101,13 +106,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     static List<Integer> historyFromString(String value){       //создание истории из строки
         String[] data= value.split(",");
         List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < data.length; i++) {
-            list.add(Integer.valueOf(data[i]));
+        for (String datum : data) {
+            list.add(Integer.valueOf(datum));
         }
         return list;
     }
 
-    //по моему это видно посредством соответствующих сеттеров
     private Task fromString(String value){           //создание задачи из строки
         Task task = new Task();
         String[] dataTask = value.split(",");
@@ -217,8 +221,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return super.getSubtask(id);
     }
 
-    // В классах задач toString настроен для более читаемого отображения в консоли.
-    //toString здесь настроен для формирования строки в методе save.
     public String toString(Task task) {
         return task.getIdTask() + ","
                 + TypesOfTasks.TASK + ","

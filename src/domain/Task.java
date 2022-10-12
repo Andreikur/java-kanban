@@ -26,11 +26,18 @@ public class Task {
         endTime = startTime.plusMinutes(duration);
     }
 
-
     public Task(String taskName, String taskDescription, long duration, LocalDateTime startTime, LocalDateTime endTime) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public Task(String taskName, String taskDescription, int idTask, LocalDateTime startTime, LocalDateTime endTime) {
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.idTask = idTask;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -73,8 +80,6 @@ public class Task {
         return startTime;
     }
 
-
-
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -107,27 +112,15 @@ public class Task {
         this.endTime = endTime;
     }
 
-
-
-    public void setEndTimeForEpic(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
     @Override
     public String toString(){
-        String  strStartTime = "";
-        String  strEndTime = "";
-        if (getStartTime() != null){
-            strStartTime = getStartTime().format(formatter);
-            strEndTime = getEndTime().format(formatter);
-        }
         return "Task{" +
-                "Название='" + getTaskName() + '\'' +
+                "Название='" + getTaskName() +
                 ", описание=" + getTaskDescription() +
                 ", Id =" + getIdTask() +
                 ", статус=" + getStatus() +
-                ", T старта=" + strStartTime +
-                ", Т окончания=" + strEndTime +
+                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(formatter) : "") +
+                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(formatter) : "") +
                 '}';
     }
 }

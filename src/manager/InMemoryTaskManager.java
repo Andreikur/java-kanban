@@ -18,7 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final   HistoryManager historyManager = Managers.getDefaultHistory();
 
     protected final TreeSet treeSet = new TreeSet();
-    private TaskDataComparator comparator = new TaskDataComparator();
+    private final TaskDataComparator comparator = new TaskDataComparator();
 
     //Создать Task
     @Override
@@ -83,8 +83,6 @@ public class InMemoryTaskManager implements TaskManager {
         id++;
         epic.setIdTask(id);
         allEpics.put(id, epic);
-
-
     }
 
     //получить список всех задач Epic
@@ -272,6 +270,9 @@ public class InMemoryTaskManager implements TaskManager {
                         epic.setEndTime(allSubtasks.get(id).getEndTime());
                     }
                 }
+            } else {
+                epic.setStartTime(allSubtasks.get(id).getStartTime());
+                epic.setEndTime(allSubtasks.get(id).getEndTime());
             }
             previousTask = allSubtasks.get(id);
         }

@@ -8,7 +8,7 @@ import java.util.List;
 public class TreeSet {
 
     private final List<Task> listSortedByDate = new ArrayList<>();
-    private TaskDataComparator comparator = new TaskDataComparator();
+    private final TaskDataComparator comparator = new TaskDataComparator();
 
     public List<Task> getListSortedByDate() {
         return listSortedByDate;
@@ -48,7 +48,7 @@ public class TreeSet {
                 }
             }
             catch (Throwable exception){
-
+                System.out.println("Задача добавлена");
             }
         }
         return isIntersection;

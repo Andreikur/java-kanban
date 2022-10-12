@@ -36,20 +36,14 @@ public class Subtask extends Task {
 
     @Override
     public String toString(){
-        String  strStartTime = "";
-        String  strEndTime = "";
-        if (getStartTime() != null){
-            strStartTime = getStartTime().format(formatter);
-            strEndTime = getEndTime().format(formatter);
-        }
         return "Subtask{" +
                 "Название='" + getTaskName() + '\'' +
                 ", описание=" + getTaskDescription() +
                 ", Id =" + getIdTask() +
                 ", статус=" + getStatus() +
                 ", Epic=" + getIdEpic() +
-                ", T старта=" + strStartTime +
-                ", Т окончания=" + strEndTime +
+                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(formatter) : "") +
+                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(formatter) : "") +
                 '}';
     }
 }

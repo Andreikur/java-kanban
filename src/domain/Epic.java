@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class Epic extends Task {
         super(taskName, taskDescription);
     }
 
+    public Epic(String taskName, String taskDescription, int idTask, LocalDateTime startTime, LocalDateTime endTime) {
+        super(taskName, taskDescription, idTask, startTime, endTime);
+    }
+
     public Epic () {
 
     }
@@ -33,17 +38,9 @@ public class Epic extends Task {
 
     @Override
     public String toString(){
-        String  strStartTime = "";
-        String  strEndTime = "";
         String str = "";
         for (Integer idSubtask : idSubtask) {
-            str = str + ", " + Integer.toString(idSubtask);
-        }
-        if (getStartTime() != null) {
-            strStartTime = getStartTime().format(formatter);
-        }
-        if (getEndTime() != null) {
-            strEndTime = getEndTime().format(formatter);
+            str = str + ", " + idSubtask;
         }
         return "Epic{" +
                 "Название='" + getTaskName() + '\'' +
@@ -51,8 +48,8 @@ public class Epic extends Task {
                 ", Id =" + getIdTask() +
                 ", статус=" + getStatus() +
                 ", Subtasks=" + str +
-                ", T старта=" + strStartTime +
-                ", Т окончания=" + strEndTime +
+                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(formatter) : "") +
+                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(formatter) : "") +
                 '}';
     }
 }

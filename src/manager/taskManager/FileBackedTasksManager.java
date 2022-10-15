@@ -11,11 +11,13 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
 
     private static String filePath;
     private List<Integer> listHistory = new ArrayList<>();
+
 
     public FileBackedTasksManager(){
         super();
@@ -103,6 +105,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         } catch (IOException e){
             throw new RuntimeException(e);
         }
+        fileBackedTasksManager.addCombinedTaskList();
         return fileBackedTasksManager;
     }
 
@@ -270,5 +273,25 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public void setId(int id) {
         super.setId(id);
+    }
+
+    public void addCombinedTaskList(){
+        super.addCombinedTaskList();
+    }
+
+    public Map<Integer, Task> getCombinedTaskList(){
+        return combinedTaskList;
+    }
+
+    public Map<Integer, Task> getAllTasks() {
+        return allTasks;
+    }
+
+    public Map<Integer, Epic> getAllEpicsMap() {
+        return allEpics;
+    }
+
+    public Map<Integer, Subtask> getAllSubtasksMap() {
+        return allSubtasks;
     }
 }

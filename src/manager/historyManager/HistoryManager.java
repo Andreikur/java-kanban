@@ -1,6 +1,8 @@
 package manager.historyManager;
 
 import domain.Task;
+
+import java.util.LinkedList;
 import java.util.List;
 
 public interface HistoryManager {
@@ -11,5 +13,7 @@ public interface HistoryManager {
     void add(Task task);
 
     void remove(int id);
+
+    LinkedList<Task> getHistoryList();
 
 }

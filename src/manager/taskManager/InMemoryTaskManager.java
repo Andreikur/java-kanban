@@ -10,16 +10,14 @@ import manager.auxiliary.TaskDataComparator;
 import manager.enums.Status;
 import manager.historyManager.HistoryManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     protected int id;
     protected final Map<Integer, Task> allTasks = new HashMap<>();
     protected final Map<Integer, Epic> allEpics = new HashMap<>();
     protected final Map<Integer, Subtask> allSubtasks = new HashMap<>();
+    protected final Map<Integer, Task> combinedTaskList = new HashMap<>();  //Хранилище всех задач
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     protected final TreeSet treeSet = new TreeSet();
@@ -33,6 +31,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (treeSet.checkingIntersections(task)) {  // если есть пересечение по времени задача не добавляется
             allTasks.put(id, task);
             treeSet.sortingByDate(task);        //добавление в список отсортированный по времени
+            combinedTaskList.putAll(allTasks);
         }
     }
 
@@ -88,6 +87,8 @@ public class InMemoryTaskManager implements TaskManager {
         id++;
         epic.setIdTask(id);
         allEpics.put(id, epic);
+        combinedTaskList.putAll(allEpics);
+
     }
 
     //получить список всех задач Epic
@@ -186,6 +187,8 @@ public class InMemoryTaskManager implements TaskManager {
             listIdEpic.add(id);
             updateStatusEpic(thisEpic);                            // обновление статуса Epic, для данной Subtask
             addEpicDataTime(thisEpic);                              //обновление времени в Epic
+            combinedTaskList.putAll(allSubtasks);
+
         } else {
             System.out.println("Задачи Epic с таким ID нет");
         }
@@ -281,6 +284,32 @@ public class InMemoryTaskManager implements TaskManager {
             }
             previousTask = allSubtasks.get(id);
         }
+    }
+
+    public void addCombinedTaskList(){
+        combinedTaskList.putAll(allTasks);
+        combinedTaskList.putAll(allEpics);
+        combinedTaskList.putAll(allSubtasks);
+    }
+
+    public Map<Integer, Task> getCombinedTaskList(){
+        return combinedTaskList;
+    }
+
+    public Map<Integer, Task> getAllTasks() {
+        return allTasks;
+    }
+
+    public Map<Integer, Epic> getAllEpicsMap() {
+        return allEpics;
+    }
+
+    public Map<Integer, Subtask> getAllSubtasksMap() {
+        return allSubtasks;
+    }
+
+    public LinkedList<Task> getHistoryList(){
+        return historyManager.getHistoryList();
     }
 
 }

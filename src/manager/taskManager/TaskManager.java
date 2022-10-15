@@ -5,7 +5,9 @@ import domain.Subtask;
 import domain.Task;
 import manager.TreeSet.TreeSet;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public interface TaskManager {
 
@@ -71,4 +73,16 @@ public interface TaskManager {
     TreeSet getTreeSet();
 
     void setId(int id);
+
+    void addCombinedTaskList();
+
+    Map<Integer, Task> getCombinedTaskList();
+
+    Map<Integer, Task> getAllTasks();
+
+    Map<Integer, Epic> getAllEpicsMap();
+
+    Map<Integer, Subtask> getAllSubtasksMap();
+
+    LinkedList<Task> getHistoryList();
 }

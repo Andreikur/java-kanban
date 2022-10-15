@@ -86,4 +86,9 @@ public class  InMemoryHistoryManager implements HistoryManager {
             this.next = next;
         }
     }
+
+    public LinkedList<Task> getHistoryList(){
+        return history;
+    }
+
 }

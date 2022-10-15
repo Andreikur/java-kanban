@@ -3,6 +3,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import Server.HttpTaskServer;
+import Server.KVServer;
 import domain.*;
 import manager.*;
 import manager.auxiliary.Menu;
@@ -14,24 +17,31 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        String filePath = "history/history.csv";            // путь местонахождения файла
-        FileBackedTasksManager.setFilePath(filePath);
-        TaskManager taskManager = Managers.getDefault();
-        Task currentTask;
-        Epic currentEpic;
-        Subtask currentSubtask;
-        List<Task> taskManager2;
-        Menu menu = new Menu();
-        menu.printMenu1();
-        Scanner scanner = new Scanner(System.in);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        new HttpTaskServer().start();
+
+        //String filePath = "history/history.csv";            // путь местонахождения файла
+        //FileBackedTasksManager.setFilePath(filePath);
+        //TaskManager taskManager = Managers.getDefault();
+        //Task currentTask;
+        //Epic currentEpic;
+        //Subtask currentSubtask;
+        //List<Task> taskManager2;
+        //Menu menu = new Menu();
+        //menu.printMenu1();
+        //Scanner scanner = new Scanner(System.in);
+        //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         //TasksTemplate.addTasksTemplate(taskManager);                   //создаем список задач!!!
 
         //Восстановление истории из файла
-        File file = new File(filePath);
-        taskManager = FileBackedTasksManager.loadFromFile(file);
-        int command = scanner.nextInt();
+        //File file = new File(filePath);
+        //taskManager = FileBackedTasksManager.loadFromFile(file);
 
+        //new HttpTaskServer().start();
+
+
+        //int command = scanner.nextInt();
+
+        /*
         while (command !=0) {
             switch (command) {
                 case 1: {
@@ -102,13 +112,7 @@ public class Main {
                             currentTask =taskManager.getTask(id);
 
                             if(currentTask != null) {
-                                /*System.out.println(" ID: " + currentTask.getIdTask()
-                                        + "\n Название: " +currentTask.getTaskName()
-                                        + "\n Описание: " + currentTask.getTaskDescription()
-                                        + "\n Статус: " + currentTask.getStatus());
-                                */
                                 System.out.println(currentTask.toString());
-
                                 //historyManager.add(taskManager.getTask(id));
                                 if(taskManager.getHistory() == null) {
                                     System.out.println("Список истории пустой");
@@ -124,14 +128,6 @@ public class Main {
                             int id = scanner.nextInt();
                             currentEpic = taskManager.getEpic(id);
                             if(currentEpic != null) {
-                                /*System.out.println(" ID: " + currentEpic.getIdTask()
-                                        + "\n Название: " + currentEpic.getTaskName()
-                                        + "\n Описание: " + currentEpic.getTaskDescription()
-                                        + "\n Статус: " + currentEpic.getStatus()
-                                        + "\n Номера подзадач: ");
-                                for (Integer idSubtask : currentEpic.getIdSubtask()){
-                                    System.out.print(idSubtask + ", ");
-                                }*/
                                 System.out.println(currentEpic.toString());
                                 System.out.println();
                                 //historyManager.add(taskManager.getEpic(id));
@@ -152,11 +148,6 @@ public class Main {
                             int id = scanner.nextInt();
                             currentSubtask = taskManager.getSubtask(id);
                             if(currentSubtask != null) {
-                                /*System.out.println(" ID: " + currentSubtask.getIdTask()
-                                        + "\n Название: " + currentSubtask.getTaskName()
-                                        + "\n Описание: " + currentSubtask.getTaskDescription()
-                                        + "\n Статус: " + currentSubtask.getStatus()
-                                        + "\n Входит в Epic c ID: " + currentSubtask.getIdEpic());*/
                                 System.out.println(currentSubtask.toString());
                                 //historyManager.add(taskManager.getSubtask(id));
                                 if(taskManager.getHistory() == null) {
@@ -342,6 +333,8 @@ public class Main {
             menu.printMenu1();
             command = scanner.nextInt();
         }
-        System.out.println("Программа завершена");
+        */
+
+        //System.out.println("Программа завершена");
     }
 }

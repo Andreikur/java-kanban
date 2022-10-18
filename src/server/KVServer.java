@@ -1,8 +1,9 @@
-package Server;
+package server;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +11,11 @@ import java.util.Map;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+/**
+ * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
+ */
 public class KVServer {
-    public static final int PORT = 8080;
+    public static final int PORT = 8078;
     private final String apiToken;
     private final HttpServer server;
     private final Map<String, String> data = new HashMap<>();
@@ -26,6 +30,37 @@ public class KVServer {
 
     private void load(HttpExchange h) {
         // TODO Добавьте получение значения по ключу
+        try {
+            System.out.println("\n/load");
+            if (!hasAuth(h)) {
+                System.out.println("Запрос не авторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
+                h.sendResponseHeaders(403, 0);
+                return;
+            }
+            if ("GET".equals(h.getRequestMethod())) {
+                String key = h.getRequestURI().getPath().substring("/load/".length());
+                if (key.isEmpty()) {
+                    System.out.println("Key для загрузки пустой. key указывается в пути: /load/{key}");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                String response = data.get(key);
+                if (response.isEmpty()) {
+                    System.out.println("Value для отправки пустой.");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                h.sendResponseHeaders(200, 0);
+
+                try (OutputStream os = h.getResponseBody()) {
+                    os.write(response.getBytes());
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            h.close();
+        }
     }
 
     private void save(HttpExchange h) throws IOException {

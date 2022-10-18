@@ -1,5 +1,6 @@
-package Server;
+package server;
 
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -19,12 +20,16 @@ import java.net.InetSocketAddress;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 public class HttpTaskServer extends FileBackedTasksManager {
 
     private static final int PORT = 8080;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-    private static Gson gson = new Gson();
+    private static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
+            .serializeNulls()
+            .create();
     public HttpServer httpServer;
 
     public HttpTaskServer() throws IOException {
@@ -43,7 +48,6 @@ public class HttpTaskServer extends FileBackedTasksManager {
         System.out.println("Сервер остановлен");
     }
 
-
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public class TaskHandler implements HttpHandler {
 
@@ -56,6 +60,10 @@ public class HttpTaskServer extends FileBackedTasksManager {
             File file = new File(filePath);
             taskManager = FileBackedTasksManager.loadFromFile(file);
 
+            HTTPTaskManager httpTaskManager = new HTTPTaskManager("http://localhost:8080"); // вместо того что выше
+            TaskManager HTTPTaskManager = Managers.getDefaultHTTPTaskManager();
+
+
             String method = httpExchange.getRequestMethod();
             String requestPath = httpExchange.getRequestURI().getPath();
             String response = "";
@@ -66,18 +74,6 @@ public class HttpTaskServer extends FileBackedTasksManager {
                 case "GET": {
                     if(requestPath.endsWith("/tasks")) {
                         response = gson.toJson(taskManager.getCombinedTaskList().values());
-                        serverResponse = 200;
-                    } else if (requestPath.endsWith("/tasks/task")){
-                        response = gson.toJson(taskManager.getAllTasks().values());
-                        serverResponse = 200;
-                    } else if (requestPath.endsWith("/tasks/epic")) {
-                        response = gson.toJson(taskManager.getAllEpicsMap().values());
-                        serverResponse = 200;
-                    } else if (requestPath.endsWith("/tasks/subtask")) {
-                        response = gson.toJson(taskManager.getAllSubtasksMap().values());
-                        serverResponse = 200;
-                    } else if (requestPath.endsWith("/tasks/history")) {
-                        response = gson.toJson(taskManager.getHistoryList());
                         serverResponse = 200;
                     } else if (requestPath.contains("/tasks/task") & httpExchange.getRequestURI().getQuery() != null){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
@@ -91,6 +87,18 @@ public class HttpTaskServer extends FileBackedTasksManager {
                         id = receivingId(httpExchange.getRequestURI().getQuery());
                         response = gson.toJson(taskManager.getSubtask(id));
                         serverResponse = 200;
+                    } else if (requestPath.endsWith("/tasks/task")){
+                        response = gson.toJson(taskManager.getAllTasks().values());
+                        serverResponse = 200;
+                    } else if (requestPath.endsWith("/tasks/epic")) {
+                        response = gson.toJson(taskManager.getAllEpicsMap().values());
+                        serverResponse = 200;
+                    } else if (requestPath.endsWith("/tasks/subtask")) {
+                        response = gson.toJson(taskManager.getAllSubtasksMap().values());
+                        serverResponse = 200;
+                    } else if (requestPath.endsWith("/tasks/history")) {
+                        response = gson.toJson(taskManager.getHistoryList());
+                        serverResponse = 200;
                     }
                     System.out.println("GET запрос");
                     break;
@@ -100,19 +108,19 @@ public class HttpTaskServer extends FileBackedTasksManager {
                         InputStream inputStream = httpExchange.getRequestBody();
                         String taskBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
                         Task task = gson.fromJson(taskBody, Task.class);
-                        taskManager.addTask(task);
+                        httpTaskManager.addTask(task);
                         serverResponse = 201;
                     } else if(requestPath.contains("/tasks/epic")) {
                         InputStream inputStream = httpExchange.getRequestBody();
                         String taskBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
                         Epic epic = gson.fromJson(taskBody, Epic.class);
-                        taskManager.addEpic(epic);
+                        httpTaskManager.addEpic(epic);
                         serverResponse = 201;
                     } else if(requestPath.contains("/tasks/subtask")) {
                         InputStream inputStream = httpExchange.getRequestBody();
                         String taskBody = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
                         Subtask subtask = gson.fromJson(taskBody, Subtask.class);
-                        taskManager.addSubtask(subtask);
+                        httpTaskManager.addSubtask(subtask);
                         serverResponse = 201;
                     }
                     System.out.println("POST запрос");
@@ -121,32 +129,32 @@ public class HttpTaskServer extends FileBackedTasksManager {
                 case "DELETE": {
                     if (requestPath.contains("/tasks/task") & httpExchange.getRequestURI().getQuery() != null){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
-                        taskManager.deleteTask(id);
+                        httpTaskManager.deleteTask(id);
                         response = gson.toJson("Task c id:" + id + " удалена!");
                         serverResponse = 200;
                     } else if (requestPath.contains("/tasks/task")){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
-                        taskManager.deleteAllTasks();
+                        httpTaskManager.deleteAllTasks();
                         response = gson.toJson("Все Task удалены!");
                         serverResponse = 200;
                     } else if (requestPath.contains("/tasks/epic") & httpExchange.getRequestURI().getQuery() != null){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
-                        taskManager.dellEpic(id);
+                        httpTaskManager.dellEpic(id);
                         response = gson.toJson("Epic c id:" + id + " удалена!");
                         serverResponse = 200;
                     } else if (requestPath.contains("/tasks/epic")){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
-                        taskManager.deleteAllEpic();
+                        httpTaskManager.deleteAllEpic();
                         response = gson.toJson("Все Epic удалены!");
                         serverResponse = 200;
                     } else if (requestPath.contains("/tasks/subtask") & httpExchange.getRequestURI().getQuery() != null){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
-                        taskManager.dellSubtask(id);
+                        httpTaskManager.dellSubtask(id);
                         response = gson.toJson("Subtask c id:" + id + " удалена!");
                         serverResponse = 200;
                     } else if (requestPath.contains("/tasks/subtask")){
                         id = receivingId(httpExchange.getRequestURI().getQuery());
-                        taskManager.deleteAllSubtask();
+                        httpTaskManager.deleteAllSubtask();
                         response = gson.toJson("Все Subtask удалены!");
                         serverResponse = 200;
                     }

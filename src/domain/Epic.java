@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +49,8 @@ public class Epic extends Task {
                 ", Id =" + getIdTask() +
                 ", статус=" + getStatus() +
                 ", Subtasks=" + str +
-                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(formatter) : "") +
-                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(formatter) : "") +
+                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm")) : "") +
+                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm")) : "") +
                 '}';
     }
 }

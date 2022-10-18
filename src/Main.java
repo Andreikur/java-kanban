@@ -1,22 +1,13 @@
 import java.io.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-import Server.HttpTaskServer;
-import Server.KVServer;
-import domain.*;
-import manager.*;
-import manager.auxiliary.Menu;
-import manager.enums.Status;
-import manager.taskManager.FileBackedTasksManager;
-import manager.taskManager.TaskManager;
+import server.HttpTaskServer;
+import server.KVServer;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        new KVServer().start();
         new HttpTaskServer().start();
 
         //String filePath = "history/history.csv";            // путь местонахождения файла

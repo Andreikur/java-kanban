@@ -15,7 +15,7 @@ public class Task {
     private LocalDateTime startTime;                // дата, когда предполагается приступить к выполнению задачи
     private LocalDateTime endTime;
 
-    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+    //protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
 
     public Task(String taskName, String taskDescription, long duration, LocalDateTime startTime) {
         this.taskName = taskName;
@@ -119,8 +119,9 @@ public class Task {
                 ", описание=" + getTaskDescription() +
                 ", Id =" + getIdTask() +
                 ", статус=" + getStatus() +
-                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(formatter) : "") +
-                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(formatter) : "") +
+                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm")) : "") +
+                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm")) : "") +
                 '}';
     }
 }
+

@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Subtask extends Task {
     private int idEpic;
@@ -42,8 +43,8 @@ public class Subtask extends Task {
                 ", Id =" + getIdTask() +
                 ", статус=" + getStatus() +
                 ", Epic=" + getIdEpic() +
-                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(formatter) : "") +
-                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(formatter) : "") +
+                ", T старта=" + ((getStartTime() != null) ? getStartTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm")) : "") +
+                ", Т окончания=" + ((getEndTime() != null) ? getEndTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm")) : "") +
                 '}';
     }
 }

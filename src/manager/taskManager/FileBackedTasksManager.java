@@ -138,92 +138,92 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     @Override
     public void addTask(Task task) {
         super.addTask(task);
-        save();
+        //save();
     }
 
     @Override
     public void addEpic(Epic epic) {
         super.addEpic(epic);
-        save();
+        //save();
     }
 
     @Override
     public void addSubtask(Subtask subtask) {
         super.addSubtask(subtask);
-        save();
+        //save();
     }
 
     @Override
     public void deleteAllTasks() {
         super.deleteAllTasks();
-        save();
+        //save();
     }
 
     @Override
     public void deleteTask(Integer id) {
         super.deleteTask(id);
-        save();
+        //save();
     }
 
     @Override
     public void deleteAllEpic() {
         super.deleteAllEpic();
-        save();
+        //save();
     }
 
     @Override
     public void dellEpic(Integer id) {
         super.dellEpic(id);
-        save();
+        //save();
     }
 
     @Override
     public void deleteAllSubtask() {
         super.deleteAllSubtask();
-        save();
+        //save();
     }
 
     @Override
     public void dellSubtask(Integer id) {
         super.dellSubtask(id);
-        save();
+        //save();
     }
 
     @Override
     public void updateTask(Task task) {
         super.updateTask(task);
-        save();
+        //save();
     }
 
     @Override
     public void updateEpic(Epic epic) {
         super.updateEpic(epic);
-        save();
+        //save();
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
         super.updateSubtask(subtask);
-        save();
+        //save();
     }
 
     @Override
     public Task getTask(Integer id) {
         super.getTask(id);
-        save();
+        //save();
         return super.getTask(id);
     }
 
     @Override
     public Epic getEpic(Integer id) {
         super.getEpic(id);
-        save();
+        //save();
         return super.getEpic(id);
     }
 
     @Override
     public Subtask getSubtask(Integer id) {
-        save();
+        //save();
         return super.getSubtask(id);
     }
 

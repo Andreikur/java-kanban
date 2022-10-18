@@ -8,7 +8,6 @@ import domain.Subtask;
 import domain.Task;
 import manager.taskManager.FileBackedTasksManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -18,7 +17,6 @@ import java.util.Map;
 
 public class HTTPTaskManager extends FileBackedTasksManager {
 
-    protected URI url;
     protected String path;
     protected KVTaskClient kvTaskClient;
     private static final Gson gson = new GsonBuilder().
@@ -36,14 +34,9 @@ public class HTTPTaskManager extends FileBackedTasksManager {
 
     public void saveTasks() throws IOException {
         if (kvTaskClient == null) {
-            System.out.println("Требуется регистрация");
+            System.out.println("Получите API_TOKEN");
             return;
         }
-
-        String filePath = "history/history.csv";            // путь местонахождения файла
-        FileBackedTasksManager.setFilePath(filePath);       //??
-        File file = new File(filePath);                     //??
-        this.loadFromFile(file);                            //??
         kvTaskClient.put("/tasks", gson.toJson(getAllTasks().values()));
         kvTaskClient.put("/epics", gson.toJson(getAllEpicsMap().values()));
         kvTaskClient.put("/subtasks", gson.toJson(getAllSubtasksMap().values()));

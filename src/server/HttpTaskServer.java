@@ -1,16 +1,3 @@
-//Шаблон Gson
-/*
-{
-	"taskName": "t3",
-	"taskDescription": "task3",
-	"idTask": 1,
-	"status": "NEW",
-	"duration": 1,
-	"startTime": "10.10.2023. 12:53",
-	"endTime": "10.10.2023. 12:54"
-}
-*/
-
 package server;
 
 import com.google.gson.GsonBuilder;
@@ -25,7 +12,6 @@ import manager.taskManager.FileBackedTasksManager;
 import com.google.gson.Gson;
 import manager.taskManager.TaskManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,7 +20,6 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class HttpTaskServer extends FileBackedTasksManager {
 
@@ -69,15 +54,6 @@ public class HttpTaskServer extends FileBackedTasksManager {
 
             @Override
         public void handle(HttpExchange httpExchange) throws IOException {
-
-            //String filePath = "history/history.csv";            // путь местонахождения файла
-            //FileBackedTasksManager.setFilePath(filePath);
-            //TaskManager taskManager = Managers.getDefault();
-            //File file = new File(filePath);
-            //taskManager = FileBackedTasksManager.loadFromFile(file);
-
-            //HTTPTaskManager httpTaskManager = new HTTPTaskManager("http://localhost:8080"); // вместо того что выше
-            //TaskManager taskManager = Managers.getDefaultHTTPTaskManager();
 
             String method = httpExchange.getRequestMethod();
             String requestPath = httpExchange.getRequestURI().getPath();

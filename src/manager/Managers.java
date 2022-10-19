@@ -21,12 +21,6 @@ public class Managers {
     public static HTTPTaskManager getDefaultHTTPTaskManager(){
         HTTPTaskManager httpTaskManager = new HTTPTaskManager("http://localhost:8078");
 
-        //String filePath = "history/history.csv";            // путь местонахождения файла
-        //FileBackedTasksManager.setFilePath(filePath);
-        //TaskManager taskManager = Managers.getDefault();
-        //File file = new File(filePath);
-        //FileBackedTasksManager.loadFromFile(file);
-
         return httpTaskManager;
     }
 
